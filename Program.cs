@@ -62,36 +62,18 @@ namespace reflectionCli {
                 return new errorCommand("Command Set Object Equals null");
             }
 
-            type.GetConstructors().ToList().ForEach(x => {
-                Console.WriteLine(x.Name);
-                x.GetParameters().ToList().ForEach(y => Console.WriteLine(" " + y.Name + "-" + y.ParameterType));
-            });
+            ConstructorInfo constructorInfo = type.GetConstructors()[0];
 
+            object result = null;
+            ParameterInfo[] parameters = constructorInfo.GetParameters();
+            if (parameters.Length == 0) {
+                result = Activator.CreateInstance(type, null);
+            }
+            else {
+                result = Activator.CreateInstance(type, new object[] { args } );
+            }
 
-            //type.GetMethods().ToList().ForEach(x => Console.WriteLine(x.Name));
-
-            // ConstructorInfo constructorInfo = type.GetConstructor(Type.EmptyTypes);
-            // if (constructorInfo == null)   {
-            //     Type[] _types = new Type[1];
-            //     _types[0] = typeof(List<string>);
-            //     constructorInfo = type.GetConstructor(_types);
-            //     if (constructorInfo == null)   {
-            //         return new errorCommand("constructor info is equal to null");
-            //     }
-            // }
-
-            // object result = null;
-            // ParameterInfo[] parameters = constructorInfo.GetParameters();
-            // object classInstance = Activator.CreateInstance(type, );
-
-            // if (parameters.Length == 0) {
-            //     result = constructorInfo.Invoke(classInstance, null);
-            // }
-            // else {
-            //     result = constructorInfo.Invoke(classInstance, new object[] { args } );
-            // }
-
-            return new errorCommand();
+            return (ICommand)result;
         }  
     }
 }
