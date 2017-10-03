@@ -10,51 +10,25 @@ namespace reflectionCli {
             var exit = false;
             while(exit == false)    {
                 Console.WriteLine();
-                Console.WriteLine("Enter command (help to display help): "); 
+                Console.WriteLine("Enter command (help to display help): ");
                 var command = Parser.Parse(Console.ReadLine());
                 exit = command.ExitVal();
             }
         }
     }
 
-    public interface ICommand    {
-        bool ExitVal();
-    }
-
-    public class nullCommand : ICommand    {
-        public bool ExitVal()        {
-            return false;
-        }
-    }
-
-    public class errorCommand : ICommand    {
-        
-        public errorCommand(string error)        {
-            Console.WriteLine(error);
-        }
-
-        public errorCommand() : this("Generic Error")   {
-
-        }
-        
-        public bool ExitVal()        {
-            return false;
-        }
-    }
-
-    public class ExitCommand : ICommand    {
-        public bool ExitVal()   {
-            return true;
-        }
-    }
-
     public static class Parser    {
-        public static ICommand Parse(string commandString) { 
-            
-            // Parse your string and create Command object
+        public static ICommand Parse(string commandString) {
+
             var commandParts = commandString.Split(' ').ToList();
             var commandName = commandParts[0];
-            var args = commandParts.Skip(1).ToList(); // the arguments are after the command
+            var args = commandParts.Skip(1).ToList();
+
+            var q = from t in Assembly.GetEntryAssembly().GetTypes()
+                    where t.GetType().GetTypeInfo().IsClass
+                    select t;
+
+            q.ToList().ForEach(t => Console.WriteLine(t.Name));
 
             Assembly assembly = typeof(commandset).GetTypeInfo().Assembly;
             Type type = assembly.GetType("reflectionCli.commandset+" + commandName);
@@ -74,6 +48,8 @@ namespace reflectionCli {
             }
 
             return (ICommand)result;
-        }  
+        }
     }
+
+
 }
