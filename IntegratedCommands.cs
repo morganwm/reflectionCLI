@@ -9,7 +9,7 @@ namespace reflectionCli {
         bool ExitVal();
     }
 
-    public class null : ICommand    {
+    public class nullCommand : ICommand    {
         public bool ExitVal()        {
             return false;
         }
