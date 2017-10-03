@@ -21,7 +21,9 @@ namespace reflectionCli {
                 Console.WriteLine(Environment.NewLine + "   - " + x.FullName);
                 x.DefinedTypes.Where(z => (
                     //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                    z.ImplementedInterfaces.Where(a => (a.Name == "ICommand")).ToList().Count != 0
+                    z.ImplementedInterfaces.Where(a => (a.Name == "ICommand"))
+                                            .ToList()
+                                            .Count != 0
                 ))
                 .ToList()
                 .ForEach(y => commandtypes.Add(y));
