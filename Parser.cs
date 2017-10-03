@@ -60,6 +60,4 @@ namespace reflectionCli {
             return (ICommand)result;
         }
     }
-
-
 }
