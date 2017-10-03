@@ -8,25 +8,6 @@ using System.Runtime.Loader;
 
 namespace reflectionCli {
 
-    public class nullCommand : ICommand    {
-        public bool ExitVal()        {
-            return false;
-        }
-    }
-
-    public class error : ICommand    {
-
-        public error(string error)        {
-            Console.WriteLine(error);
-        }
-
-        public error() : this("Generic Error")  {}
-
-        public bool ExitVal()        {
-            return false;
-        }
-    }
-
     public class help : ICommand    {
 
         public help() {
@@ -46,9 +27,4 @@ namespace reflectionCli {
         }
     }
 
-    public class exit : ICommand    {
-        public bool ExitVal()   {
-            return true;
-        }
-    }
 }

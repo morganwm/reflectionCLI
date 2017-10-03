@@ -13,6 +13,8 @@ namespace reflectionCli {
             try
             {
                 Assembly TempAsm = AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
+
+                //need to check and
                 var tempicommand = TempAsm.GetTypes().ToList().Where(x => (x.Name == "ICommand")).ToList();
 
                 if (tempicommand.Count == 0) {
