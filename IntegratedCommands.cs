@@ -3,6 +3,8 @@ using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime;
+using System.Runtime.Loader;
 
 namespace reflectionCli {
     public interface ICommand    {
@@ -36,6 +38,24 @@ namespace reflectionCli {
                     .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
                     .ToList()
                     .ForEach(x => Console.WriteLine("   - " + x.Name));
+        }
+        public bool ExitVal()   {
+            return false;
+        }
+    }
+
+    public class LoadAssembly : ICommand    {
+
+        public LoadAssembly(String path) {
+            try
+            {
+                Program.activeasm.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(path));
+            }
+            catch (System.Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+
         }
         public bool ExitVal()   {
             return false;

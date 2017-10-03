@@ -3,7 +3,7 @@ using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 
-namespace reflectionCli {
+namespace reflectionCli.extended {
     public class commandset {
 
         public class ParrotCommand : ICommand    {

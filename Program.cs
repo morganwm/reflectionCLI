@@ -7,6 +7,7 @@ using System.Runtime;
 using System.Runtime.Loader;
 
 namespace reflectionCli {
+
     class Program    {
 
         public static List<Assembly> activeasm;
@@ -31,7 +32,7 @@ namespace reflectionCli {
             var commandName = commandParts[0];
             var args = commandParts.Skip(1).ToList();
 
-            Program.activeasm.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(@"C:\MyDirectory\bin\Custom.Thing.dll"));
+
 
             var commandtypes = Assembly.GetEntryAssembly().DefinedTypes
                                 .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
