@@ -6,9 +6,9 @@ using System.Collections.Generic;
 namespace reflectionCli.extended {
     public class commandset {
 
-        public class ParrotCommand : ICommand    {
+        public class Parrot : ICommand    {
 
-            public ParrotCommand(List<string> input) {
+            public Parrot(List<string> input) {
                 input.ForEach(x => Console.WriteLine(x));
             }
 
