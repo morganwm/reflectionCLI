@@ -34,10 +34,13 @@ namespace reflectionCli {
 
         public help() {
             Console.WriteLine("Valid Commands:");
-            Assembly.GetEntryAssembly().DefinedTypes
-                    .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
+            Program.activeasm.ForEach(x => {
+                Console.WriteLine("   - " + x.FullName);
+                x.DefinedTypes
+                    //.Where(z => z.ImplementedInterfaces.Contains(typeof(ICommand)))
                     .ToList()
-                    .ForEach(x => Console.WriteLine("   - " + x.Name));
+                    .ForEach(y => Console.WriteLine("       - " + y.Name));
+            });
         }
         public bool ExitVal()   {
             return false;
