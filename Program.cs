@@ -24,11 +24,10 @@ namespace reflectionCli {
             var commandName = commandParts[0];
             var args = commandParts.Skip(1).ToList();
 
-            var q = from t in Assembly.GetEntryAssembly().GetTypes()
-                    where t.GetType().GetTypeInfo().IsClass
-                    select t;
-
-            q.ToList().ForEach(t => Console.WriteLine(t.Name));
+            Assembly.GetEntryAssembly().DefinedTypes
+                    .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
+                    .ToList()
+                    .ForEach(x => Console.WriteLine(x.Name));
 
             Assembly assembly = typeof(commandset).GetTypeInfo().Assembly;
             Type type = assembly.GetType("reflectionCli.commandset+" + commandName);
