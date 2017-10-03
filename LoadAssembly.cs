@@ -31,7 +31,7 @@ namespace reflectionCli {
                                     .ToList();
 
                 if (extvalinfo.Count == 0) {
-                    throw new Exception("ICommands did not return the correct exit value");
+                    throw new Exception("ICommand did not return the correct exit value");
                 }
 
                 Program.activeasm.Add(TempAsm);
