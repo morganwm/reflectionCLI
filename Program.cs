@@ -3,11 +3,18 @@ using System.Linq;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime;
+using System.Runtime.Loader;
 
 namespace reflectionCli {
     class Program    {
+
+        public static List<Assembly> activeasm;
+
         public static void Main(string[] args)  {
             var exit = false;
+            activeasm = new List<Assembly>();
+            activeasm.Add(Assembly.GetEntryAssembly());
             while(exit == false)    {
                 Console.WriteLine();
                 Console.WriteLine("Enter command (help to display help): ");
@@ -24,6 +31,8 @@ namespace reflectionCli {
             var commandName = commandParts[0];
             var args = commandParts.Skip(1).ToList();
 
+            Program.activeasm.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(@"C:\MyDirectory\bin\Custom.Thing.dll"));
+
             var commandtypes = Assembly.GetEntryAssembly().DefinedTypes
                                 .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
                                 .Where(x => (x.Name == commandName))
@@ -39,8 +48,6 @@ namespace reflectionCli {
                 return new error(msg);
             }
 
-            //Assembly assembly = typeof(commandset).GetTypeInfo().Assembly;
-            //Type type = assembly.GetType("reflectionCli.commandset+" + commandName);
             Type type = commandtypes[0].AsType();
 
             ConstructorInfo constructorInfo = type.GetConstructors()[0];

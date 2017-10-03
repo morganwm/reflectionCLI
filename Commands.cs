@@ -8,17 +8,13 @@ namespace reflectionCli {
 
         public class ParrotCommand : ICommand    {
 
-            public ParrotCommand(List<string> input)
-            {
+            public ParrotCommand(List<string> input) {
                 input.ForEach(x => Console.WriteLine(x));
             }
 
-            public bool ExitVal()
-            {
+            public bool ExitVal() {
                 return false;
             }
         }
-
-
     }
 }

@@ -21,9 +21,7 @@ namespace reflectionCli {
             Console.WriteLine(error);
         }
 
-        public error() : this("Generic Error")   {
-
-        }
+        public error() : this("Generic Error")  {}
 
         public bool ExitVal()        {
             return false;
