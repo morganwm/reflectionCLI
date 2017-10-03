@@ -15,12 +15,22 @@ namespace reflectionCli {
             var commandName = commandParts[0];
             var args = commandParts.Skip(1).ToList();
 
+            List<TypeInfo> commandtypes = new List<TypeInfo>();
 
+            Program.activeasm.ForEach(x => {
+                Console.WriteLine(Environment.NewLine + "   - " + x.FullName);
+                x.DefinedTypes.Where(z => (
+                    //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
+                    z.ImplementedInterfaces.Where(a => (a.Name == "ICommand")).ToList().Count != 0
+                ))
+                .ToList()
+                .ForEach(y => commandtypes.Add(y));
+            });
 
-            var commandtypes = Assembly.GetEntryAssembly().DefinedTypes
-                                .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
-                                .Where(x => (x.Name == commandName))
-                                .ToList();
+            // var commandtypes = Assembly.GetEntryAssembly().DefinedTypes
+            //                     .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
+            //                     .Where(x => (x.Name == commandName))
+            //                     .ToList();
 
             if (commandtypes.Count == 0) {
                 return new error("unable to find command");
