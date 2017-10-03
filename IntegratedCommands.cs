@@ -7,9 +7,6 @@ using System.Runtime;
 using System.Runtime.Loader;
 
 namespace reflectionCli {
-    public interface ICommand    {
-        bool ExitVal();
-    }
 
     public class nullCommand : ICommand    {
         public bool ExitVal()        {
@@ -35,30 +32,15 @@ namespace reflectionCli {
         public help() {
             Console.WriteLine("Valid Commands:");
             Program.activeasm.ForEach(x => {
-                Console.WriteLine("   - " + x.FullName);
+                Console.WriteLine(Environment.NewLine + "   - " + x.FullName);
                 x.DefinedTypes
-                    //.Where(z => z.ImplementedInterfaces.Contains(typeof(ICommand)))
+                    .Where(z => (
+                        //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
+                        z.ImplementedInterfaces.Where(a => (a.Name == "ICommand")).ToList().Count != 0
+                    ))
                     .ToList()
                     .ForEach(y => Console.WriteLine("       - " + y.Name));
             });
-        }
-        public bool ExitVal()   {
-            return false;
-        }
-    }
-
-    public class LoadAssembly : ICommand    {
-
-        public LoadAssembly(String path) {
-            try
-            {
-                Program.activeasm.Add(AssemblyLoadContext.Default.LoadFromAssemblyPath(path));
-            }
-            catch (System.Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-
         }
         public bool ExitVal()   {
             return false;
