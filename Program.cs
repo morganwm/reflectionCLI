@@ -24,16 +24,24 @@ namespace reflectionCli {
             var commandName = commandParts[0];
             var args = commandParts.Skip(1).ToList();
 
-            Assembly.GetEntryAssembly().DefinedTypes
-                    .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
-                    .ToList()
-                    .ForEach(x => Console.WriteLine(x.Name));
+            var commandtypes = Assembly.GetEntryAssembly().DefinedTypes
+                                .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
+                                .Where(x => (x.Name == commandName))
+                                .ToList();
 
-            Assembly assembly = typeof(commandset).GetTypeInfo().Assembly;
-            Type type = assembly.GetType("reflectionCli.commandset+" + commandName);
-            if (type == null)   {
-                return new errorCommand("Command Set Object Equals null");
+            if (commandtypes.Count == 0) {
+                return new error("unable to find command");
             }
+
+            if (commandtypes.Count > 1) {
+                string msg = "multiple commands found: " + Environment.NewLine;
+                commandtypes.ForEach(x => { msg = msg + "   " + x.Name + Environment.NewLine; });
+                return new error(msg);
+            }
+
+            //Assembly assembly = typeof(commandset).GetTypeInfo().Assembly;
+            //Type type = assembly.GetType("reflectionCli.commandset+" + commandName);
+            Type type = commandtypes[0].AsType();
 
             ConstructorInfo constructorInfo = type.GetConstructors()[0];
 

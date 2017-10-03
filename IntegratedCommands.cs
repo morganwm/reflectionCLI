@@ -2,25 +2,26 @@ using System;
 using System.Linq;
 using System.IO;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace reflectionCli {
     public interface ICommand    {
         bool ExitVal();
     }
 
-    public class nullCommand : ICommand    {
+    public class null : ICommand    {
         public bool ExitVal()        {
             return false;
         }
     }
 
-    public class errorCommand : ICommand    {
+    public class error : ICommand    {
 
-        public errorCommand(string error)        {
+        public error(string error)        {
             Console.WriteLine(error);
         }
 
-        public errorCommand() : this("Generic Error")   {
+        public error() : this("Generic Error")   {
 
         }
 
@@ -29,7 +30,21 @@ namespace reflectionCli {
         }
     }
 
-    public class ExitCommand : ICommand    {
+    public class help : ICommand    {
+
+        public help() {
+            Console.WriteLine("Valid Commands:");
+            Assembly.GetEntryAssembly().DefinedTypes
+                    .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
+                    .ToList()
+                    .ForEach(x => Console.WriteLine("   - " + x.Name));
+        }
+        public bool ExitVal()   {
+            return false;
+        }
+    }
+
+    public class exit : ICommand    {
         public bool ExitVal()   {
             return true;
         }
