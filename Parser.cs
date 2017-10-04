@@ -11,14 +11,13 @@ namespace reflectionCli {
     public static class Parser    {
         public static ICommand Parse(string commandString) {
 
+
             var commandParts = commandString.Split(' ').ToList();
             var commandName = commandParts[0];
             var args = commandParts.Skip(1).ToList();
 
             List<TypeInfo> commandtypes = new List<TypeInfo>();
-
             Program.activeasm.ForEach(x => {
-                Console.WriteLine(Environment.NewLine + "   - " + x.FullName);
                 x.DefinedTypes.Where(z => (
                     //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
                     z.ImplementedInterfaces.Where(a => (a.Name == "ICommand"))
@@ -50,9 +49,11 @@ namespace reflectionCli {
             ConstructorInfo constructorInfo = type.GetConstructors()[0];
 
             object result = null;
-            ParameterInfo[] parameters = constructorInfo.GetParameters();
+            ParameterInfo[] paramsinfo = constructorInfo.GetParameters();
 
-            if (parameters.Length == 0) {
+            var argstest = ArgumentsParser.ParseArgumentsFromString(commandString, paramsinfo);
+
+            if (paramsinfo.Length == 0) {
                 result = Activator.CreateInstance(type, null);
             }
             else {
