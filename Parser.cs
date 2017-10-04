@@ -25,6 +25,7 @@ namespace reflectionCli {
                                             .ToList()
                                             .Count != 0
                 ))
+                .Where(a => (a.Name == commandName))
                 .ToList()
                 .ForEach(y => commandtypes.Add(y));
             });
