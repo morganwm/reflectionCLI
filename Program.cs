@@ -14,7 +14,7 @@ namespace reflectionCli {
         public static void Main(string[] args)  {
             activeasm = new List<Assembly>();
             activeasm.Add(Assembly.GetEntryAssembly());
-            while(true)    {
+            while(true) {
                 Console.WriteLine();
                 Console.WriteLine("Enter command (help to display help): ");
                 var command = Parser.Parse(Console.ReadLine());
@@ -22,5 +22,4 @@ namespace reflectionCli {
             }
         }
     }
-
 }

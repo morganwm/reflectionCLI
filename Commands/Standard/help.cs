@@ -27,5 +27,4 @@ namespace reflectionCli {
             return false;
         }
     }
-
 }
