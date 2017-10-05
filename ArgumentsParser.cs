@@ -22,16 +22,37 @@ namespace reflectionCli {
             var paramnames = atoms.Where(x => (x.Value[0] == '-'));
 
             if (paramnames == null) {
-                throw new Exception("No Parameter Names were found. Please use the convention -ParameterName Value");
+                throw new Exception("No Parameter Names were found. Please use the convention: -ParameterName Value");
             }
 
             //see if any of the parameter counts match given inputs
             var validconstructors = type.GetConstructors()
-                                        .Where(x => (x.GetParameters().ToList().Count == paramnames.ToList().Count));
+                                        .Where(x => (x.GetParameters().Count() == paramnames.Count()));
 
             if (validconstructors == null) {
-                throw new Exception($"No Constructors for {type.Name} have {paramnames.ToList().Count} arguments {Environment.NewLine}");
+                throw new Exception($"No Constructors for {type.Name} have {paramnames.Count()} arguments {Environment.NewLine}");
             }
+
+            //break input into groups based on the variable name that came before them
+            Dictionary<Match, List<Object>> parampackages = new Dictionary<Match, List<Object>>();
+            for (int i = 0; i < paramnames.Count(); i++)
+            {
+                List<Object> objs = new List<object>();
+                if (i == paramnames.Count() - 1) {
+                    atoms.ToList().Where(x => ((x.Index > paramnames.ToList()[i].Index)))
+                                    .ToList()
+                                    .ForEach(x => objs.Add(x.Value));
+                }
+                else {
+                    atoms.ToList().Where(x => ((x.Index > paramnames.ToList()[i].Index) &&
+                                                (x.Index < paramnames.ToList()[i+1].Index)))
+                                    .ToList()
+                                    .ForEach(x => objs.Add(x.Value));
+                }
+
+                parampackages.Add(paramnames.ToList()[i], objs);
+            }
+
 
             //inspect the different constructors and collect parameter info for all of them
 
