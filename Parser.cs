@@ -46,12 +46,14 @@ namespace reflectionCli {
 
             Type type = commandtypes[0].AsType();
 
+            var argstest = ArgumentsParser.ParseArgumentsFromString(commandString, type);
+
             ConstructorInfo constructorInfo = type.GetConstructors()[0];
 
             object result = null;
             ParameterInfo[] paramsinfo = constructorInfo.GetParameters();
 
-            var argstest = ArgumentsParser.ParseArgumentsFromString(commandString, paramsinfo);
+
 
             if (paramsinfo.Length == 0) {
                 result = Activator.CreateInstance(type, null);

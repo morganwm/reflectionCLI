@@ -9,11 +9,30 @@ using System.Runtime.Loader;
 namespace reflectionCli {
 
     public static class ArgumentsParser {
-        public static object[] ParseArgumentsFromString(string input, ParameterInfo[] paramsinfo) {
+        public static object[] ParseArgumentsFromString(string input, Type type) {
             object[] outval = new object[0];
 
             var parts = input.Split(new char[] { ' ' }, 2);
             if (parts.Length < 2) { return null; }
+            string argstring = parts[1];
+
+
+        //inspect the different constructors and collect parameter info for all of them
+
+
+
+        type.GetConstructors().ToList()
+            .ForEach(x => x.GetParameters());
+
+        //see if any of the parameter counts match given inputs (with a couple different parsing mechanisms)
+
+
+
+
+
+
+
+
 
             if (!parts[1].Contains(" -")) {
                 if (!parts[1].Contains(',')) {
