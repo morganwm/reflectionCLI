@@ -17,22 +17,20 @@ namespace reflectionCli {
             if (parts.Length < 2) { return null; }
 
             string argstring = parts[1];
-            //var atoms = Regex.Split(argstring, "(?<=^[^\"]*(?:\"[^\"]*\"[^\"]*)*)-(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)").Where(s => !string.IsNullOrWhiteSpace(s));
-            //Regex r = new Regex("([^\"]\\S*|\".+?\"|[.+?])\\s*");
-            var s = Regex.Matches(argstring, "(\\-\\S*)|(\\[.+?\\])|(\\\".+?\\\")|(\\S*)");
-            var m = Regex.Matches(argstring, "(\\-\\S*)|(\\[.+?\\])|(\\\".+?\\\")|(\\S*)").Cast<Match>().Where(x => !String.IsNullOrEmpty(x.Value));
+            var atoms = Regex.Matches(argstring, "(\\-\\S*)|(\\[.+?\\])|(\\\".+?\\\")|(\\S*)").Cast<Match>().Where(x => !String.IsNullOrEmpty(x.Value));
 
-            List<string> atoms = new List<string>();
+            var paramnames = atoms.Where(x => (x.Value[0] == '-'));
 
-            //var atoms = Regex.Split(argstring, "(?<=^[^\"]*(?:\"[^\"]*\"[^\"]*)*)-(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)").Where(s => !string.IsNullOrWhiteSpace(s));
-
+            if (paramnames == null) {
+                throw new Exception("No Parameter Names were found. Please use the convention -ParameterName Value");
+            }
 
             //see if any of the parameter counts match given inputs
             var validconstructors = type.GetConstructors()
-                                        .Where(x => (x.GetParameters().ToList().Count == atoms.ToList().Count));
+                                        .Where(x => (x.GetParameters().ToList().Count == paramnames.ToList().Count));
 
             if (validconstructors == null) {
-                throw new Exception($"No Constructors for {type.Name} have {atoms.ToList().Count} arguments {Environment.NewLine}");
+                throw new Exception($"No Constructors for {type.Name} have {paramnames.ToList().Count} arguments {Environment.NewLine}");
             }
 
             //inspect the different constructors and collect parameter info for all of them
