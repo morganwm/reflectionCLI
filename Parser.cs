@@ -53,14 +53,17 @@ namespace reflectionCli {
             object result = null;
             ParameterInfo[] paramsinfo = constructorInfo.GetParameters();
 
-
-
-            if (paramsinfo.Length == 0) {
-                result = Activator.CreateInstance(type, null);
+            try {
+                if (paramsinfo.Length == 0) {
+                    result = Activator.CreateInstance(type, null);
+                }
+                else {
+                    //result = Activator.CreateInstance(type, new object[] { args } );
+                    result = Activator.CreateInstance(type, args[0]); //this is only here for now until I can get the parameter stuff working
+                }
             }
-            else {
-                //result = Activator.CreateInstance(type, new object[] { args } );
-                result = Activator.CreateInstance(type, args[0]); //this is only here for now until I can get the parameter stuff working
+            catch (Exception ex) {
+                result = new error(ex.ToString());
             }
 
             return (ICommand)result;
