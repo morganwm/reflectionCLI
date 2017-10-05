@@ -19,7 +19,9 @@ namespace reflectionCli {
             string argstring = parts[1];
             //var atoms = Regex.Split(argstring, "(?<=^[^\"]*(?:\"[^\"]*\"[^\"]*)*)-(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)").Where(s => !string.IsNullOrWhiteSpace(s));
             //Regex r = new Regex("([^\"]\\S*|\".+?\"|[.+?])\\s*");
-            MatchCollection m = Regex.Matches(argstring, "(-\\S*|\".+?\"|[.+?])\\s*");
+            var s = Regex.Matches(argstring, "(\\-\\S*)|(\\[.+?\\])|(\\\".+?\\\")|(\\S*)");
+            var m = Regex.Matches(argstring, "(\\-\\S*)|(\\[.+?\\])|(\\\".+?\\\")|(\\S*)").Cast<Match>().Where(x => !String.IsNullOrEmpty(x.Value));
+
             List<string> atoms = new List<string>();
 
             //var atoms = Regex.Split(argstring, "(?<=^[^\"]*(?:\"[^\"]*\"[^\"]*)*)-(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)").Where(s => !string.IsNullOrWhiteSpace(s));
