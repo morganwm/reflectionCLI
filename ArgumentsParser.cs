@@ -17,13 +17,13 @@ namespace reflectionCli {
             if (parts.Length < 2) { return null; }
 
             string argstring = parts[1];
-            var atoms = Regex.Split(argstring, "(?<=^[^\"]*(?:\"[^\"]*\"[^\"]*)*) (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+            var atoms = Regex.Split(argstring, "(?<=^[^\"]*(?:\"[^\"]*\"[^\"]*)*)-(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")
+                                .Where(s => !string.IsNullOrWhiteSpace(s));
 
 
             //see if any of the parameter counts match given inputs
-            List<ConstructorInfo> validconstructors = type.GetConstructors().ToList()
-                                                            .Where(x => (x.GetParameters().ToList().Count == atoms.ToList().Count))
-                                                            .ToList();
+            var validconstructors = type.GetConstructors()
+                                        .Where(x => (x.GetParameters().ToList().Count == atoms.ToList().Count));
 
             if (validconstructors == null) {
                 throw new Exception($"No Constructors for {type.Name} have {atoms.ToList().Count} arguments {Environment.NewLine}");
