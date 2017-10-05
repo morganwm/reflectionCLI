@@ -11,25 +11,29 @@ namespace reflectionCli {
 
     public static class ArgumentsParser {
         public static object[] ParseArgumentsFromString(string input, Type type) {
-            object[] outval = new object[0];
+            List<object> outval = new List<object>();
 
             var parts = input.Split(new char[] { ' ' }, 2);
             if (parts.Length < 2) { return null; }
-            string argstring = parts[1];
 
+            string argstring = parts[1];
             var atoms = Regex.Split(argstring, "(?<=^[^\"]*(?:\"[^\"]*\"[^\"]*)*) (?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
 
 
-        //inspect the different constructors and collect parameter info for all of them
+            //see if any of the parameter counts match given inputs
+            List<ConstructorInfo> validconstructors = type.GetConstructors().ToList()
+                                                            .Where(x => (x.GetParameters().ToList().Count == atoms.ToList().Count))
+                                                            .ToList();
 
-        type.GetConstructors().ToList()
-            .ForEach(x => x.GetParameters());
+            if (validconstructors == null) {
+                throw new Exception($"No Constructors for {type.Name} have {atoms.ToList().Count} arguments {Environment.NewLine}");
+            }
 
-        //see if any of the parameter counts match given inputs (with a couple different parsing mechanisms)
+            //inspect the different constructors and collect parameter info for all of them
 
             if (!parts[1].Contains(" -")) {
                 if (!parts[1].Contains(',')) {
-                    outval = parts[1].Split(' ');
+                    //outval = parts[1].Split(' ');
                 }
                 //needs to break the commands up on spaces and then if there are commas break that up into arrays
             }
@@ -37,7 +41,7 @@ namespace reflectionCli {
             //this needs to break things up based on '-' and then ignore the first word after the '-'
             var args = parts[1].Split('-');
 
-            return outval;
+            return outval.ToArray();
         }
     }
 }

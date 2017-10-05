@@ -39,21 +39,24 @@ namespace reflectionCli {
             }
 
             if (commandtypes.Count > 1) {
-                string msg = "multiple commands found: " + Environment.NewLine;
-                commandtypes.ForEach(x => { msg = msg + "   " + x.FullName + Environment.NewLine; });
+                string msg = $"multiple commands found:{Environment.NewLine}";
+                commandtypes.ForEach(x => { msg = msg + $"   {x.FullName}{Environment.NewLine}";});
                 return new error(msg);
             }
 
-            Type type = commandtypes[0].AsType();
-
-            var argstest = ArgumentsParser.ParseArgumentsFromString(commandString, type);
-
-            ConstructorInfo constructorInfo = type.GetConstructors()[0];
 
             object result = null;
-            ParameterInfo[] paramsinfo = constructorInfo.GetParameters();
 
             try {
+
+                Type type = commandtypes[0].AsType();
+
+                var argstest = ArgumentsParser.ParseArgumentsFromString(commandString, type);
+
+                ConstructorInfo constructorInfo = type.GetConstructors()[0];
+
+                ParameterInfo[] paramsinfo = constructorInfo.GetParameters();
+
                 if (paramsinfo.Length == 0) {
                     result = Activator.CreateInstance(type, null);
                 }
