@@ -17,8 +17,12 @@ namespace reflectionCli {
             if (parts.Length < 2) { return null; }
 
             string argstring = parts[1];
-            var atoms = Regex.Split(argstring, "(?<=^[^\"]*(?:\"[^\"]*\"[^\"]*)*)-(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)")
-                                .Where(s => !string.IsNullOrWhiteSpace(s));
+            //var atoms = Regex.Split(argstring, "(?<=^[^\"]*(?:\"[^\"]*\"[^\"]*)*)-(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)").Where(s => !string.IsNullOrWhiteSpace(s));
+            //Regex r = new Regex("([^\"]\\S*|\".+?\"|[.+?])\\s*");
+            MatchCollection m = Regex.Matches(argstring, "(-\\S*|\".+?\"|[.+?])\\s*");
+            List<string> atoms = new List<string>();
+
+            //var atoms = Regex.Split(argstring, "(?<=^[^\"]*(?:\"[^\"]*\"[^\"]*)*)-(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)").Where(s => !string.IsNullOrWhiteSpace(s));
 
 
             //see if any of the parameter counts match given inputs
