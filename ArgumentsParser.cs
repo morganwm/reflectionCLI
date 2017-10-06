@@ -91,9 +91,41 @@ namespace reflectionCli {
                 }
                 else {
                     Type nesttype = outtype.GetTypeInfo().GenericTypeArguments[0];
-                    dynamic converted;
-                    converted = tempobj.Select(x => Convert.ChangeType(x, nesttype));
-                    outval.Add(tempobj.Select(x => Convert.ChangeType(x, nesttype)).ToArray());
+                    switch (nesttype.Name) {
+                        
+                        case "Int32":
+                            outval.Add(tempobj.Select(x => Convert.ToInt32(x)).ToList());
+                            break;
+
+                        case "Double":
+                            outval.Add(tempobj.Select(x => Convert.ToDouble(x)).ToList());
+                            break;
+
+                        case "Boolean":
+                            outval.Add(tempobj.Select(x => Convert.ToBoolean(x)).ToList());
+                            break;
+
+                        case "Decimal":
+                            outval.Add(tempobj.Select(x => Convert.ToDecimal(x)).ToList());
+                            break;
+
+                        case "DateTime":
+                            outval.Add(tempobj.Select(x => Convert.ToDateTime(x)).ToList());
+                            break;
+
+                        case "Byte":
+                            outval.Add(tempobj.Select(x => Convert.ToByte(x)).ToList());
+                            break;
+
+                        default:
+                            outval.Add(tempobj);
+                            break;
+                    }
+
+                    //dynamic converted = new object[0];
+                    //converted = Convert.ChangeType(converted, outtype);
+                    //converted = tempobj.Select(x => Convert.ChangeType(x, nesttype)).ToList();
+                    //outval.Add(tempobj.Select(x => Convert.ChangeType(x, nesttype)).ToArray());
                     //outval.Add(Convert.ChangeType(tempobj, outtype));
                 }
             }
