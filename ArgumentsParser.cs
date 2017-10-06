@@ -95,8 +95,6 @@ namespace reflectionCli {
                 }
             }
 
-
-
             constructor = chosenconstructor;
             return outval.ToArray();
         }
