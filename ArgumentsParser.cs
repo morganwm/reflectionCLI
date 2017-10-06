@@ -59,6 +59,13 @@ namespace reflectionCli {
                                                          .Select(x => x.Name)
                                                          .Intersect(parampackages.Select(y => y.Key.Value.Remove(0,1))).Count() == parampackages.Count()
                                                   );
+            if (matchingconstructors == null) {
+                throw new Exception($"No Constructors for {type.Name} have matching input names to those Provided.");
+            }
+
+            if (matchingconstructors.Count() > 1) {
+                throw new Exception($"Multiple Constructors for {type.Name} have matching input names, this is an issue with the way that {type.Name} was written.");
+            }
 
 
 
