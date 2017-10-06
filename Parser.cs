@@ -13,9 +13,7 @@ namespace reflectionCli {
             object result = new nullCommand();
             try {
 
-                var commandParts = commandString.Split(' ').ToList();
-                var commandName = commandParts[0];
-                var args = commandParts.Skip(1).ToList();
+                var commandName = commandString.Split(' ').ToList()[0];
 
                 List<TypeInfo> commandtypes = new List<TypeInfo>();
                 Program.activeasm.ForEach(x => {
@@ -36,7 +34,7 @@ namespace reflectionCli {
                 //                     .ToList();
 
                 if (commandtypes.Count == 0) {
-                    return new error("unable to find command");
+                    return new error($"unable to find command {commandName}");
                 }
 
                 if (commandtypes.Count > 1) {
@@ -48,16 +46,14 @@ namespace reflectionCli {
                 Type type = commandtypes[0].AsType();
 
                 ConstructorInfo constructorInfo = null;
-
-                var argstest = ArgumentsParser.ParseArgumentsFromString(commandString, type, ref constructorInfo);
-
+                var args = ArgumentsParser.ParseArgumentsFromString(commandString, type, ref constructorInfo);
                 ParameterInfo[] paramsinfo = constructorInfo.GetParameters();
 
                 if (paramsinfo.Length == 0) {
                     result = Activator.CreateInstance(type, null);
                 }
                 else {
-                    result = Activator.CreateInstance(type, argstest);
+                    result = Activator.CreateInstance(type, args);
                 }
             }
             catch (Exception ex) {
