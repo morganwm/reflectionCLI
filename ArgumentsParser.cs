@@ -87,7 +87,6 @@ namespace reflectionCli {
                 var tempobj = parampackages.Where(x => (x.Key.Value.Remove(0,1) == chosenconstructor.GetParameters().ToList()[i].Name))
                                             .Select(y => y.Value).ToList()[0];
 
-
                 if (tempobj.Count() == 1) {
                     outval.Add(Convert.ChangeType(tempobj.ToArray()[0], outtype));
                 }
