@@ -27,6 +27,10 @@ namespace reflectionCli.extended {
                 input.ForEach(x => Console.WriteLine($"     {number}: {x}"));
             }
 
+            public Parakeet(List<int> inputints, int number) {
+                inputints.ForEach(x => Console.WriteLine($"     {number}: {x}"));
+            }
+
             public bool ExitVal() {
                 return false;
             }

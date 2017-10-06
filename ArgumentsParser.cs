@@ -81,8 +81,7 @@ namespace reflectionCli {
             }
 
             ConstructorInfo chosenconstructor = matchingconstructors.ToList()[0];
-            Object[] robjs = new object[chosenconstructor.GetParameters().Count()];
-            for (int i = 0; i < robjs.Count(); i++) {
+            for (int i = 0; i < chosenconstructor.GetParameters().Count(); i++) {
                 Type outtype = chosenconstructor.GetParameters().ToList()[i].ParameterType;
                 var tempobj = parampackages.Where(x => (x.Key.Value.Remove(0,1) == chosenconstructor.GetParameters().ToList()[i].Name))
                                             .Select(y => y.Value).ToList()[0];
@@ -91,7 +90,9 @@ namespace reflectionCli {
                     outval.Add(Convert.ChangeType(tempobj.ToArray()[0], outtype));
                 }
                 else {
-                    outval.Add(Convert.ChangeType(tempobj, outtype));
+                    Type nesttype = outtype.GetTypeInfo().GenericTypeArguments[0];
+                    outval.Add(Convert.ChangeType((tempobj.Select(x => Convert.ChangeType(x, nesttype)).ToArray()), outtype));
+                    //outval.Add(Convert.ChangeType(tempobj, outtype));
                 }
             }
 
