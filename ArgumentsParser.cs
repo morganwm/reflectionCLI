@@ -16,13 +16,15 @@ namespace reflectionCli {
             //no input case
             var parts = input.Split(new char[] { ' ' }, 2);
             if (parts.Length < 2) {
-                 constructor = type.GetConstructors().Where(x => (x.GetParameters().Count() == 0)).ToList()[0];
+                 var constructorlist = type.GetConstructors().Where(x => (x.GetParameters().Count() == 0)).ToList();
 
-                if (constructor == null) {
+                if (constructorlist.Count == 0) {
                     throw new Exception($"No Constructors for {type.Name} have 0 arguments {Environment.NewLine}");
                 }
 
-                 return null;
+                constructor = constructorlist[0];
+
+                return null;
             }
 
             string argstring = parts[1];
