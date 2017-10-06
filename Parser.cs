@@ -57,7 +57,7 @@ namespace reflectionCli {
                 }
             }
             catch (Exception ex) {
-                result = new error(ex.ToString());
+                result = (Program.verbose) ?  new error(ex.ToString()) : new error(ex.Message);
             }
 
             return (ICommand)result;
