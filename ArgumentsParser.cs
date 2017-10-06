@@ -53,6 +53,16 @@ namespace reflectionCli {
                 parampackages.Add(paramnames.ToList()[i], objs);
             }
 
+            //find constructor whos vartiable names match those given
+            var matchingconstructors = type.GetConstructors()
+                                            .Where(c => c.GetParameters()
+                                                         .Select(x => x.Name)
+                                                         .Intersect(parampackages.Select(y => y.Key.Value.Remove(0,1))).Count() == parampackages.Count()
+                                                  );
+
+
+
+
 
             //inspect the different constructors and collect parameter info for all of them
 

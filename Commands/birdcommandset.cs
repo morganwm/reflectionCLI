@@ -20,7 +20,11 @@ namespace reflectionCli.extended {
         public class Parakeet : ICommand    {
 
             public Parakeet(List<string> input) {
-                input.ForEach(x => Console.WriteLine("  +" + x));
+                input.ForEach(x => Console.WriteLine($"  +{x}"));
+            }
+
+            public Parakeet(List<string> input, int number) {
+                input.ForEach(x => Console.WriteLine($"     {number}: {x}"));
             }
 
             public bool ExitVal() {
