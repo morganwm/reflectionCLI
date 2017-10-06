@@ -91,7 +91,7 @@ namespace reflectionCli {
                 }
                 else {
                     Type nesttype = outtype.GetTypeInfo().GenericTypeArguments[0];
-                    outval.Add(Convert.ChangeType((tempobj.Select(x => Convert.ChangeType(x, nesttype)).ToArray()), outtype));
+                    outval.Add(tempobj.Select(x => Convert.ChangeType(x, nesttype)).ToArray());
                     //outval.Add(Convert.ChangeType(tempobj, outtype));
                 }
             }
