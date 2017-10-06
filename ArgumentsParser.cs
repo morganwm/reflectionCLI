@@ -10,11 +10,20 @@ using System.Text.RegularExpressions;
 namespace reflectionCli {
 
     public static class ArgumentsParser {
-        public static object[] ParseArgumentsFromString(string input, Type type) {
+        public static object[] ParseArgumentsFromString(string input, Type type, ref ConstructorInfo constructor) {
             List<object> outval = new List<object>();
 
+            //no input case
             var parts = input.Split(new char[] { ' ' }, 2);
-            if (parts.Length < 2) { return null; }
+            if (parts.Length < 2) {
+                 constructor = type.GetConstructors().Where(x => (x.GetParameters().Count() == 0)).ToList()[0];
+
+                if (constructor == null) {
+                    throw new Exception($"No Constructors for {type.Name} have 0 arguments {Environment.NewLine}");
+                }
+
+                 return null;
+            }
 
             string argstring = parts[1];
             var atoms = Regex.Matches(argstring, "(\\-\\S*)|(\\[.+?\\])|(\\\".+?\\\")|(\\S*)").Cast<Match>().Where(x => !String.IsNullOrEmpty(x.Value));
@@ -34,10 +43,10 @@ namespace reflectionCli {
             }
 
             //break input into groups based on the variable name that came before them
-            Dictionary<Match, List<Object>> parampackages = new Dictionary<Match, List<Object>>();
+            Dictionary<Match, List<string>> parampackages = new Dictionary<Match, List<string>>();
             for (int i = 0; i < paramnames.Count(); i++)
             {
-                List<Object> objs = new List<object>();
+                List<string> objs = new List<string>();
                 if (i == paramnames.Count() - 1) {
                     atoms.ToList().Where(x => ((x.Index > paramnames.ToList()[i].Index)))
                                     .ToList()
@@ -58,6 +67,9 @@ namespace reflectionCli {
                                             .Where(c => c.GetParameters()
                                                          .Select(x => x.Name)
                                                          .Intersect(parampackages.Select(y => y.Key.Value.Remove(0,1))).Count() == parampackages.Count()
+                                                         &&
+                                                         parampackages.Select(y => y.Key.Value.Remove(0,1))
+                                                         .Intersect(c.GetParameters().Select(x => x.Name)).Count() == c.GetParameters().Count()
                                                   );
             if (matchingconstructors == null) {
                 throw new Exception($"No Constructors for {type.Name} have matching input names to those Provided.");
@@ -67,22 +79,24 @@ namespace reflectionCli {
                 throw new Exception($"Multiple Constructors for {type.Name} have matching input names, this is an issue with the way that {type.Name} was written.");
             }
 
+            ConstructorInfo chosenconstructor = matchingconstructors.ToList()[0];
+            Object[] robjs = new object[chosenconstructor.GetParameters().Count()];
+            for (int i = 0; i < robjs.Count(); i++) {
+                Type outtype = chosenconstructor.GetParameters().ToList()[i].GetType();
+                var tempobj = parampackages.Where(x => (x.Key.Value.Remove(0,1) == chosenconstructor.GetParameters().ToList()[i].Name))
+                                            .Select(y => y.Value);
 
-
-
-
-            //inspect the different constructors and collect parameter info for all of them
-
-            if (!parts[1].Contains(" -")) {
-                if (!parts[1].Contains(',')) {
-                    //outval = parts[1].Split(' ');
+                if (tempobj.Count() == 1) {
+                    outval.Add(tempobj.ToArray()[0]);
+                    //outval.Add(Convert.ChangeType(tempobj.ToArray()[0], outtype));
                 }
-                //needs to break the commands up on spaces and then if there are commas break that up into arrays
+                else {
+                    outval.Add(tempobj);
+                   //outval.Add(Convert.ChangeType(tempobj, outtype));
+                }
             }
 
-            //this needs to break things up based on '-' and then ignore the first word after the '-'
-            var args = parts[1].Split('-');
-
+            constructor = chosenconstructor;
             return outval.ToArray();
         }
     }
