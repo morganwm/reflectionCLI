@@ -91,6 +91,8 @@ namespace reflectionCli {
                 }
                 else {
                     Type nesttype = outtype.GetTypeInfo().GenericTypeArguments[0];
+                    dynamic converted;
+                    converted = tempobj.Select(x => Convert.ChangeType(x, nesttype));
                     outval.Add(tempobj.Select(x => Convert.ChangeType(x, nesttype)).ToArray());
                     //outval.Add(Convert.ChangeType(tempobj, outtype));
                 }
