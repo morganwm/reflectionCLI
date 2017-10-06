@@ -71,6 +71,7 @@ namespace reflectionCli {
                                                          parampackages.Select(y => y.Key.Value.Remove(0,1))
                                                          .Intersect(c.GetParameters().Select(x => x.Name)).Count() == c.GetParameters().Count()
                                                   );
+
             if (matchingconstructors == null) {
                 throw new Exception($"No Constructors for {type.Name} have matching input names to those Provided.");
             }
@@ -82,19 +83,20 @@ namespace reflectionCli {
             ConstructorInfo chosenconstructor = matchingconstructors.ToList()[0];
             Object[] robjs = new object[chosenconstructor.GetParameters().Count()];
             for (int i = 0; i < robjs.Count(); i++) {
-                Type outtype = chosenconstructor.GetParameters().ToList()[i].GetType();
+                Type outtype = chosenconstructor.GetParameters().ToList()[i].ParameterType;
                 var tempobj = parampackages.Where(x => (x.Key.Value.Remove(0,1) == chosenconstructor.GetParameters().ToList()[i].Name))
-                                            .Select(y => y.Value);
+                                            .Select(y => y.Value).ToList()[0];
+
 
                 if (tempobj.Count() == 1) {
-                    outval.Add(tempobj.ToArray()[0]);
-                    //outval.Add(Convert.ChangeType(tempobj.ToArray()[0], outtype));
+                    outval.Add(Convert.ChangeType(tempobj.ToArray()[0], outtype));
                 }
                 else {
-                    outval.Add(tempobj);
-                   //outval.Add(Convert.ChangeType(tempobj, outtype));
+                    outval.Add(Convert.ChangeType(tempobj, outtype));
                 }
             }
+
+
 
             constructor = chosenconstructor;
             return outval.ToArray();
