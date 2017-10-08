@@ -17,8 +17,7 @@ namespace reflectionCli {
             Console.WriteLine("sample -value1 5");
             Console.WriteLine("To see a list of commands simply type \"list\" ");
             Console.WriteLine("To see a list of the inputs for a specific command type \"list -name \" followed by the name of the command");
-
-            
+            Console.WriteLine();
         }
 
         public bool ExitVal()   {
