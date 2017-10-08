@@ -1,9 +1,5 @@
-using System;
-using System.Linq;
-using System.IO;
-
-
-namespace reflectionCli {
+namespace reflectionCli
+{
 
     public class exit : ICommand    {
         public bool ExitVal()   {
