@@ -10,42 +10,17 @@ namespace reflectionCli {
     public class help : ICommand    {
 
         public help() {
-            Console.WriteLine("Valid Commands:");
-            Program.activeasm.ForEach(x => {
-                Console.WriteLine(Environment.NewLine + "   - " + x.FullName);
-                x.DefinedTypes.Where(z => (
-                    //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                    z.ImplementedInterfaces.Where(a => (a.Name == "ICommand"))
-                                            .ToList()
-                                            .Count != 0
-                ))
-                .ToList()
-                .ForEach(y => Console.WriteLine("       - " + y.Name));
-            });
+            Console.WriteLine();
+            Console.WriteLine("To run a Command type the name of the command followed by the name of each parameter and it's value.");
+            Console.WriteLine("For example to run a command called \"sample\" you would just type: sample ");
+            Console.WriteLine("If this command had an input called \"value1\" and you wanted to set that value to \"5\" you would type: ");
+            Console.WriteLine("sample -value1 5");
+            Console.WriteLine("To see a list of commands simply type \"list\" ");
+            Console.WriteLine("To see a list of the inputs for a specific command type \"list -name \" followed by the name of the command");
+
+            
         }
 
-        public help(string name) {
-            Console.WriteLine("Valid Commands:");
-            Program.activeasm.ForEach(x => {
-                Console.WriteLine(Environment.NewLine + "   - " + x.FullName);
-                x.DefinedTypes.Where(z => (
-                    //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                    z.ImplementedInterfaces.Where(a => (a.Name == "ICommand"))
-                                            .ToList()
-                                            .Count != 0
-                ))
-                .Where(a => (a.Name == name))
-                .ToList()
-                .ForEach(y => { 
-                    y.AsType().GetConstructors().ToList().ForEach(z => {
-                        Console.WriteLine(Environment.NewLine + "      - " + name);
-                        z.GetParameters().ToList().ForEach(a => {
-                            Console.WriteLine($"        - {a.Name} ({a.ParameterType.FullName})");
-                        });
-                    });
-                });
-            });
-        }
         public bool ExitVal()   {
             return false;
         }
