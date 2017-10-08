@@ -19,8 +19,7 @@ namespace reflectionCli {
             while(true) {
                 Console.WriteLine();
                 Console.WriteLine("Enter command (help to display help): ");
-                var command = Parser.Parse(Console.ReadLine());
-                if (command.ExitVal()) { break; }
+                if (Parser.Parse(Console.ReadLine())) { break; }
             }
         }
     }

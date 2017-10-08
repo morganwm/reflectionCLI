@@ -9,7 +9,7 @@ using System.Runtime.Loader;
 namespace reflectionCli {
 
     public static class Parser    {
-        public static ICommand Parse(string commandString) {
+        public static Boolean Parse(string commandString) {
             object result = new nullCommand();
             try {
 
@@ -34,13 +34,13 @@ namespace reflectionCli {
                 //                     .ToList();
 
                 if (commandtypes.Count == 0) {
-                    return new error($"unable to find command {commandName}");
+                    throw new Exception($"unable to find command {commandName}");
                 }
 
                 if (commandtypes.Count > 1) {
                     string msg = $"multiple commands found:{Environment.NewLine}";
                     commandtypes.ForEach(x => { msg = msg + $"   {x.FullName}{Environment.NewLine}";});
-                    return new error(msg);
+                    throw new Exception(msg);
                 }
 
                 Type type = commandtypes[0].AsType();
@@ -60,7 +60,10 @@ namespace reflectionCli {
                 result = (Program.verbose) ?  new error(ex.ToString()) : new error(ex.Message);
             }
 
-            return (ICommand)result;
+            Boolean exitbool = (Boolean)result.GetType().GetMethod("ExitVal").Invoke(result, null);
+
+
+            return exitbool;
         }
     }
 }
