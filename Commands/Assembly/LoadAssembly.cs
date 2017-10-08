@@ -12,8 +12,6 @@ namespace reflectionCli {
         public LoadAssembly(String path) {
             try
             {
-                //Assembly TempAsm = AssemblyLoadContext.Default.LoadFromAssemblyPath(path);
-                //Assembly TempAsm2 = Assembly.Load(File.ReadAllBytes(path));
                 Assembly TempAsm = AssemblyLoadContext.Default.LoadFromStream(new MemoryStream(File.ReadAllBytes(path)));
 
                 //need to check and
