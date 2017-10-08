@@ -61,8 +61,6 @@ namespace reflectionCli {
             }
 
             Boolean exitbool = (Boolean)result.GetType().GetMethod("ExitVal").Invoke(result, null);
-
-
             return exitbool;
         }
     }
