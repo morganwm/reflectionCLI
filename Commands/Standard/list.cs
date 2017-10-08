@@ -25,7 +25,7 @@ namespace reflectionCli {
         }
 
         public list(string name) {
-            Console.WriteLine("Valid Commands:");
+            Console.WriteLine($"Valid Commands for {name}:");
             Program.activeasm.ForEach(x => {
                 Console.WriteLine(Environment.NewLine + "   - " + x.FullName);
                 x.DefinedTypes.Where(z => (
