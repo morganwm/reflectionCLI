@@ -21,26 +21,6 @@ namespace reflectionCli {
 
                 string readText = File.ReadAllText(path);
 
-                var code = @"
-        using System;
-        public class ExampleClass {
-
-            private readonly string _message;
-
-            public ExampleClass()
-            {
-                _message = ""Hello World"";
-            }
-
-            public string getMessage()
-            {
-                return _message;
-            }
-
-        }";
-
-
-
                 CSharpCompilationOptions options = new CSharpCompilationOptions(
                     OutputKind.DynamicallyLinkedLibrary,
 		            reportSuppressedDiagnostics: true,
