@@ -20,7 +20,7 @@ namespace reflectionCli {
                                             .Count != 0
                 ))
                 .ToList()
-                .ForEach(y => Console.WriteLine("       - " + y.Name));
+                .ForEach(y => Console.WriteLine($"       - {y.Name}"));
             });
         }
 
