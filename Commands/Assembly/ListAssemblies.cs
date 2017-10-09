@@ -12,7 +12,7 @@ namespace reflectionCli {
         public ListAssemblies() {
             try
             {
-                Program.activeasm.ForEach(x => Console.WriteLine(x.GetName().Name));
+                Program.activeasm.Select(a => a.Value).ToList().ForEach(x => Console.WriteLine(x.GetName().Name));
             }
             catch (Exception ex)
             {

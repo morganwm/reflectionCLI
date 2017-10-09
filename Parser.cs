@@ -16,7 +16,7 @@ namespace reflectionCli {
                 var commandName = commandString.Split(' ').ToList()[0];
 
                 List<TypeInfo> commandtypes = new List<TypeInfo>();
-                Program.activeasm.ForEach(x => {
+                Program.activeasm.Select(a => a.Value).ToList().ForEach(x => {
                     x.DefinedTypes.Where(z => (
                         //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
                         z.ImplementedInterfaces.Where(a => (a.Name == "ICommand"))

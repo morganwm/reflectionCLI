@@ -9,12 +9,12 @@ namespace reflectionCli {
 
     class Program    {
 
-        public static List<Assembly> activeasm;
+        public static Dictionary<Guid, Assembly> activeasm;
         public static Boolean verbose;
 
         public static void Main(string[] args)  {
-            activeasm = new List<Assembly>();
-            activeasm.Add(Assembly.GetEntryAssembly());
+            activeasm = new Dictionary<Guid, Assembly>();
+            activeasm.Add(new Guid() ,Assembly.GetEntryAssembly());
             verbose = true;
             while(true) {
                 Console.WriteLine();

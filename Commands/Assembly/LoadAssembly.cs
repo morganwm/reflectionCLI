@@ -17,7 +17,7 @@ namespace reflectionCli {
                 //need to check and
                 var tempicommand = TempAsm.GetTypes().ToList().Where(x => (x.Name == "ICommand")).ToList();
 
-                if (Program.activeasm.Select(x => x.GetName().Name).Contains(TempAsm.GetName().Name)) {
+                if (Program.activeasm.Select(x => x.Value.GetName().Name).Contains(TempAsm.GetName().Name)) {
                     throw new Exception($"An Assembly named {TempAsm.GetName().Name} already exists.");
                 }
 
@@ -40,8 +40,7 @@ namespace reflectionCli {
                     throw new Exception("ICommand did not return the correct exit value");
                 }
 
-                Program.activeasm.Add(TempAsm);
-
+                Program.activeasm.Add(new Guid() ,TempAsm);
 
             }
             catch (Exception ex)

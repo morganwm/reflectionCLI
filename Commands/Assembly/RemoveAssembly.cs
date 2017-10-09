@@ -12,21 +12,21 @@ namespace reflectionCli {
         public RemoveAssembly(String name) {
             try
             {
-                var TempAsm = Program.activeasm.Where(x => (x.GetName().Name == name));
+                var TempAsmEntries = Program.activeasm.Where(x => (x.Value.GetName().Name == name));
 
-                if (TempAsm.Count() == 0) {
+                if (TempAsmEntries.Count() == 0) {
                     throw new Exception($"Unable to find Assembly {name}");
                 }
 
-                if (TempAsm.Count() > 1) {
+                if (TempAsmEntries.Count() > 1) {
                     throw new Exception($"Multiple Assemblies Found with the name: {name}");
                 }
 
-                if (TempAsm.ToList()[0] == Assembly.GetEntryAssembly()) {
+                if (TempAsmEntries.ToList()[0].Value == Assembly.GetEntryAssembly()) {
                     throw new Exception($"Cannot remove assemblly {Assembly.GetEntryAssembly().GetName().Name} as this is the Entry Assembly");
                 }
 
-                Program.activeasm.Remove(TempAsm.ToList()[0]);
+                Program.activeasm.Remove(TempAsmEntries.ToList()[0].Key);
             }
             catch (Exception ex)
             {
