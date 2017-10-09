@@ -36,7 +36,7 @@ namespace reflectionCli {
                     throw new Exception("ICommand did not return the correct exit value");
                 }
 
-                Program.activeasm.Add(new Guid(TempAsm.FullName + DateTime.Now.ToString()) ,TempAsm);
+                Program.activeasm.Add(Guid.NewGuid() ,TempAsm);
 
             }
             catch (Exception ex)

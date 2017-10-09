@@ -14,7 +14,7 @@ namespace reflectionCli {
 
         public static void Main(string[] args)  {
             activeasm = new Dictionary<Guid, Assembly>();
-            activeasm.Add(new Guid(Assembly.GetEntryAssembly().FullName + DateTime.Now.ToString()), Assembly.GetEntryAssembly());
+            activeasm.Add(Guid.NewGuid(), Assembly.GetEntryAssembly());
             verbose = true;
             while(true) {
                 Console.WriteLine();
