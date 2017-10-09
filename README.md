@@ -35,4 +35,8 @@ Removing an assembly is easy as well, simply run [*RemoveAssembly*](Commands\Ass
 
 To access this functionality simply run the [*LoadUncompiledCode*](Commands\Assembly\LoadUncompiledCode.cs) command followed by a path to your text file. This command will read in and attempt to compile your code, and if successful generate an assembly named: **{name of your file}{guid}**. The GUID is important as this gets around the issue above with name collisions, meaning that you can load in the same set of code multiple times.
  
-As of right now you can't call functions with the same name so you would need to remove the old assembly first (this will be fixed soon). The other very powerful aspect of this is that because the file is read in completely at the beginning and the compilation takes place entirely in memory there are no files generated and no locks placed on existing files. Meaning that you do not need to stop or restart the application in order to continue modifying your code.
+You can call functions with the same name from different assemblies by specifying the assembly name using "@" before the assembly name.
+
+`@assemblyname commandname -variablename variablevalue`
+
+ The other very powerful aspect of this is that because the file is read in completely at the beginning and the compilation takes place entirely in memory there are no files generated and no locks placed on existing files. Meaning that you do not need to stop or restart the application in order to continue modifying your code.

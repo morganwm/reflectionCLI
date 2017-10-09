@@ -13,24 +13,47 @@ namespace reflectionCli {
             object result = new nullCommand();
             try {
 
-                var commandName = commandString.Split(' ').ToList()[0];
+                string asmname;
+                string commandName;
 
                 List<TypeInfo> commandtypes = new List<TypeInfo>();
 
-                //add switch to search in a specific assembly
+                //switch to search in a specific assembly
+                if (commandString[0] == '@')
+                {
+                    //search specific assembly
+                    asmname = commandString.Split(' ').ToList()[0].Remove(0,1);
+                    commandName = commandString.Split(' ').ToList()[1];
+                    Program.activeasm.Where(r => r.Value.GetName().Name == asmname).Select(a => a.Value).ToList().ForEach(x => {
+                        x.DefinedTypes.Where(z => (
+                            //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
+                            z.ImplementedInterfaces.Where(a => (a.Name == "ICommand"))
+                                                    .ToList()
+                                                    .Count != 0
+                        ))
+                        .Where(a => (a.Name == commandName))
+                        .ToList()
+                        .ForEach(y => commandtypes.Add(y));
+                    });
+                }
+                else {
+                    //search for commands in all active assemblies
+                    commandName = commandString.Split(' ').ToList()[0];
+                    Program.activeasm.Select(a => a.Value).ToList().ForEach(x => {
+                        x.DefinedTypes.Where(z => (
+                            //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
+                            z.ImplementedInterfaces.Where(a => (a.Name == "ICommand"))
+                                                    .ToList()
+                                                    .Count != 0
+                        ))
+                        .Where(a => (a.Name == commandName))
+                        .ToList()
+                        .ForEach(y => commandtypes.Add(y));
+                    });
+                }
 
-                //search for commands in all active assemblies
-                Program.activeasm.Select(a => a.Value).ToList().ForEach(x => {
-                    x.DefinedTypes.Where(z => (
-                        //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                        z.ImplementedInterfaces.Where(a => (a.Name == "ICommand"))
-                                                .ToList()
-                                                .Count != 0
-                    ))
-                    .Where(a => (a.Name == commandName))
-                    .ToList()
-                    .ForEach(y => commandtypes.Add(y));
-                });
+
+                
 
                 // var commandtypes = Assembly.GetEntryAssembly().DefinedTypes
                 //                     .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
