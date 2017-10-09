@@ -11,7 +11,7 @@ This is a dotNET Core based Command Line Interface that takes advantage of refle
 
 ## Usage
 
-Upon starting the application you will be greeted by `"Enter command (help to display help):"` my first suggestion would be to enter help and read the help. Beyond that there are not many standard commands, some basic string and argument parsing commands to show that it works (and that I used for development/debugging purposes) and that is about it. "But Morgan why aren't there any commands?" you may ask, well because the idea of this is to be able to run external commands that have been loaded into it either through preexisting *.dll* files or through text files that contain source code with the correct format.
+Upon starting the application you will be greeted by `"Enter command (help to display help):"` my first suggestion would be to enter help and read the help. Beyond that there are not many standard commands, [some basic string and argument parsing commands](Commands\birdcommands.cs) to show that it works (and that I used for development/debugging purposes) and that is about it. "But Morgan why aren't there any commands?" you may ask, well because the idea of this is to be able to run external commands that have been loaded into it either through preexisting *.dll* files or through text files that contain source code with the correct format.
 
 ### Loading in Assemblies
 
