@@ -10,15 +10,7 @@ namespace reflectionCli {
     public class ListAssemblies : ICommand    {
 
         public ListAssemblies() {
-            try
-            {
-                Program.activeasm.ToList().ForEach(x => Console.WriteLine($"{x.Value.GetName().Name}: {x.Key}"));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine( (Program.verbose) ? ex.ToString() : ex.Message );
-            }
-
+            Program.activeasm.ToList().ForEach(x => Console.WriteLine($"{x.Value.GetName().Name}: {x.Key}"));
         }
         public bool ExitVal()   {
             return false;

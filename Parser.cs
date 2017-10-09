@@ -87,6 +87,7 @@ namespace reflectionCli {
                 result = (Program.verbose) ?  new error(ex.ToString()) : new error(ex.Message);
             }
 
+            //this has to be done through reflection because anything loaded at runtime won't have the same interface so a cast to ICommand would break
             Boolean exitbool = (Boolean)result.GetType().GetMethod("ExitVal").Invoke(result, null);
             return exitbool;
         }
