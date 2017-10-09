@@ -17,10 +17,6 @@ namespace reflectionCli {
                 //need to check and
                 var tempicommand = TempAsm.GetTypes().ToList().Where(x => (x.Name == "ICommand")).ToList();
 
-                if (Program.activeasm.Select(x => x.Value.GetName().Name).Contains(TempAsm.GetName().Name)) {
-                    throw new Exception($"An Assembly named {TempAsm.GetName().Name} already exists.");
-                }
-
                 if (tempicommand.Count == 0) {
                     throw new Exception("Unable to find ICommand");
                 }
@@ -45,7 +41,7 @@ namespace reflectionCli {
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine( (Program.verbose) ? ex.ToString() : ex.Message );
             }
 
         }
