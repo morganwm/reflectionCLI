@@ -11,9 +11,9 @@ namespace reflectionCli {
 
         public list() {
             Console.WriteLine("Valid Commands:");
-            Program.activeasm.Select(a => a.Value).ToList().ForEach(x => {
-                Console.WriteLine(Environment.NewLine + "   - " + x.FullName);
-                x.DefinedTypes.Where(z => (
+            Program.activeasm.ToList().ForEach(x => {
+                Console.WriteLine($"{Environment.NewLine}   - {x.Value.GetName().Name}: {x.Key}");
+                x.Value.DefinedTypes.Where(z => (
                     //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
                     z.ImplementedInterfaces.Where(a => (a.Name == "ICommand"))
                                             .ToList()
@@ -26,9 +26,9 @@ namespace reflectionCli {
 
         public list(string name) {
             Console.WriteLine($"Valid Commands for {name}:");
-            Program.activeasm.Select(a => a.Value).ToList().ForEach(x => {
-                Console.WriteLine(Environment.NewLine + "   - " + x.FullName);
-                x.DefinedTypes.Where(z => (
+            Program.activeasm.ToList().ForEach(x => {
+                Console.WriteLine($"{Environment.NewLine}   - {x.Value.GetName().Name}: {x.Key}");
+                x.Value.DefinedTypes.Where(z => (
                     //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
                     z.ImplementedInterfaces.Where(a => (a.Name == "ICommand"))
                                             .ToList()
