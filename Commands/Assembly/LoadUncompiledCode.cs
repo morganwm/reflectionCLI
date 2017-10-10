@@ -1,17 +1,13 @@
 using System;
 using System.Linq;
 using System.IO;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime;
 using System.Runtime.Loader;
-using System.CodeDom.Compiler;
-using Microsoft.CSharp;
-using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
-namespace reflectionCli {
+namespace reflectionCli
+{
     public class LoadUncompiledCode : ICommand    {
 
         public LoadUncompiledCode(String path) {
@@ -36,7 +32,8 @@ namespace reflectionCli {
                 MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.DynamicAttribute).GetTypeInfo().Assembly.Location),
                 //MetadataReference.CreateFromFile(typeof(ExpressionType).GetTypeInfo().Assembly.Location),
                 MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("mscorlib")).Location),
-                MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Runtime")).Location)
+                MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Runtime")).Location),
+                MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName("System.Reflection")).Location)
             };
 
             var compilation = CSharpCompilation.Create(
