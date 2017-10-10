@@ -8,7 +8,7 @@ namespace reflectionCli {
     public class error : ICommand    {
 
         public error(string error)        {
-            Console.WriteLine(error);
+            Console.Error.WriteLine(error);
         }
 
         public error() : this("Generic Error")  {}

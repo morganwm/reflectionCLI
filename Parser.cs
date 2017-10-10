@@ -16,6 +16,10 @@ namespace reflectionCli {
                 string asmname;
                 string commandName;
 
+                if (commandString == null || commandString ==  "") {
+                    throw new Exception($"Please Enter the name of a command");
+                }
+
                 List<TypeInfo> commandtypes = new List<TypeInfo>();
 
                 //switch to search in a specific assembly
@@ -53,7 +57,7 @@ namespace reflectionCli {
                 }
 
 
-                
+
 
                 // var commandtypes = Assembly.GetEntryAssembly().DefinedTypes
                 //                     .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
