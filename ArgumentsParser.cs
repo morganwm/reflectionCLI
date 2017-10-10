@@ -94,7 +94,7 @@ namespace reflectionCli {
                 else {
                     Type nesttype = outtype.GetTypeInfo().GenericTypeArguments[0];
                     switch (nesttype.Name) {
-                        
+
                         case "Int32":
                             outval.Add(tempobj.Select(x => Convert.ToInt32(x)).ToList());
                             break;
