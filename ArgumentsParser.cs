@@ -61,6 +61,13 @@ namespace reflectionCli {
                                     .ForEach(x => objs.Add(x.Value));
                 }
 
+                //strip quotes off of things that start and end with them
+                for (int n = 0; n < objs.Count(); n++) {
+                    if (objs[n][0] == '"' && objs[n].Last() == '"') {
+                        objs[n] = objs[n].Substring(1, objs[n].Length - 2);
+                    }
+                }
+
                 parampackages.Add(paramnames.ToList()[i], objs);
             }
 
