@@ -77,7 +77,7 @@ namespace ReflectionCli
             var matchingConstructors = type.GetConstructors()
                 .Where(t => t.GetParameters()
                     .Select(u => u.Name)
-                    .Intersect(paramPackages.Select(u => u.Key.Value.Remove(0, 1))).Count() == paramPackages.Count() 
+                    .Intersect(paramPackages.Select(u => u.Key.Value.Remove(0, 1))).Count() == paramPackages.Count()
                         && paramPackages.Select(u => u.Key.Value.Remove(0, 1))
                             .Intersect(t.GetParameters().Select(u => u.Name)).Count() == t.GetParameters().Count());
 
