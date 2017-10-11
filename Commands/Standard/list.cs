@@ -37,7 +37,7 @@ namespace ReflectionCli
                         .ToList()
                         .Count != 0
                 ))
-                .Where(u => u.Name == name)
+                .Where(u => u.Name.Equals(name, StringComparison.CurrentCultureIgnoreCase))
                 .ToList()
                 .ForEach(u =>
                 {
