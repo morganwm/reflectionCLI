@@ -1,23 +1,22 @@
 using System;
-using System.Linq;
-using System.IO;
 
-
-namespace reflectionCli {
-
-    public class verbose : ICommand    {
-
-        public verbose(Boolean set)        {
-            Program.verbose = set;
+namespace ReflectionCli
+{
+    public class Verbose : ICommand
+    {
+        public Verbose(bool set)
+        {
+            Program.Verbose = set;
         }
 
-        public verbose()  {
-            Console.WriteLine(Program.verbose);
+        public Verbose()
+        {
+            Console.WriteLine(Program.Verbose);
         }
 
-        public bool ExitVal()        {
+        public bool ExitVal()
+        {
             return false;
         }
     }
-
 }

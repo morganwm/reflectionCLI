@@ -1,21 +1,22 @@
 using System;
-using System.Linq;
-using System.IO;
 
-
-namespace reflectionCli {
-
-    public class error : ICommand    {
-
-        public error(string error)        {
+namespace ReflectionCli
+{
+    public class Error : ICommand
+    {
+        public Error(string error)
+        {
             Console.Error.WriteLine(error);
         }
 
-        public error() : this("Generic Error")  {}
+        public Error()
+            : this("Generic Error")
+        {
+        }
 
-        public bool ExitVal()        {
+        public bool ExitVal()
+        {
             return false;
         }
     }
-
 }

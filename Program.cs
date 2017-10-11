@@ -1,25 +1,29 @@
 ﻿using System;
-using System.Linq;
-using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 
+namespace ReflectionCli
+{
+    public class Program
+    {
+        public static Dictionary<Guid, Assembly> ActiveAsm;
+        public static bool Verbose;
 
-namespace reflectionCli {
+        public static void Main(string[] args)
+        {
+            ActiveAsm = new Dictionary<Guid, Assembly>
+            {
+                { Guid.NewGuid(), Assembly.GetEntryAssembly() },
+            };
+            Verbose = true;
 
-    class Program    {
-
-        public static Dictionary<Guid, Assembly> activeasm;
-        public static Boolean verbose;
-
-        public static void Main(string[] args)  {
-            activeasm = new Dictionary<Guid, Assembly>();
-            activeasm.Add(Guid.NewGuid(), Assembly.GetEntryAssembly());
-            verbose = true;
-            while(true) {
+            while (true) {
                 Console.WriteLine();
                 Console.WriteLine("Enter command (help to display help):");
-                if (Parser.Parse(Console.ReadLine())) { break; }
+
+                if (Parser.Parse(Console.ReadLine())) {
+                    break;
+                }
             }
         }
     }
