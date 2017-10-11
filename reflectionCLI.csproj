@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <RuntimeIdentifiers>win10-x64;win7-x64;osx.10.11-x64</RuntimeIdentifiers>
+    <RuntimeIdentifiers>win10-x64;win7-x64</RuntimeIdentifiers>
     <TargetFramework>netcoreapp1.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
