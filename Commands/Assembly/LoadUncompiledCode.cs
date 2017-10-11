@@ -39,7 +39,6 @@ namespace ReflectionCli
                 var compilation = CSharpCompilation.Create(
                     Path.GetFileName(path) + Guid.NewGuid().ToString(),
                     references: references,
-                    // syntaxTrees: new SyntaxTree[] { CSharpSyntaxTree.ParseText(code) },
                     syntaxTrees: new SyntaxTree[] { CSharpSyntaxTree.ParseText(readText) },
                     options: options);
 

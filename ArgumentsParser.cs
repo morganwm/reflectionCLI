@@ -130,12 +130,6 @@ namespace ReflectionCli
                             outval.Add(tempObject);
                             break;
                     }
-
-                    // dynamic converted = new object[0];
-                    // converted = Convert.ChangeType(converted, outtype);
-                    // converted = tempobj.Select(x => Convert.ChangeType(x, nesttype)).ToList();
-                    // outval.Add(tempobj.Select(x => Convert.ChangeType(x, nesttype)).ToArray());
-                    // outval.Add(Convert.ChangeType(tempobj, outtype));
                 }
             }
 
