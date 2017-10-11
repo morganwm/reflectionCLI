@@ -88,18 +88,13 @@ namespace ReflectionCli
                 var args = ArgumentsParser.ParseArgumentsFromString(commandString, type, ref constructorInfo);
                 ParameterInfo[] paramsinfo = constructorInfo.GetParameters();
 
-                if (paramsinfo.Length == 0) {
-                    result = Activator.CreateInstance(type, null);
-                } else {
-                    result = Activator.CreateInstance(type, args);
-                }
+                result = Activator.CreateInstance(type, (paramsinfo.Length == 0) ? null : args );
             } catch (Exception ex) {
-                result = Program.Verbose ? new Error(ex.ToString()) : new Error(ex.Message);
+                result = new Error( Program.Verbose ? ex.ToString() : ex.Message );
             }
 
             // his has to be done through reflection because anything loaded at runtime won't have the same interface so a cast to ICommand would break
-            bool exitbool = (bool)result.GetType().GetMethod("ExitVal").Invoke(result, null);
-            return exitbool;
+            return (bool)result.GetType().GetMethod("ExitVal").Invoke(result, null);
         }
     }
 }
