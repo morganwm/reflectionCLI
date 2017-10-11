@@ -1,8 +1,9 @@
-namespace reflectionCli
+namespace ReflectionCli
 {
-
-    public class exit : ICommand    {
-        public bool ExitVal()   {
+    public class Exit : ICommand
+    {
+        public bool ExitVal()
+        {
             return true;
         }
     }

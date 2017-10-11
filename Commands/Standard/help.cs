@@ -1,15 +1,11 @@
 using System;
-using System.Linq;
-using System.IO;
-using System.Collections.Generic;
-using System.Reflection;
 
-
-namespace reflectionCli {
-
-    public class help : ICommand    {
-
-        public help() {
+namespace ReflectionCli
+{
+    public class Help : ICommand
+    {
+        public Help()
+        {
             Console.WriteLine();
             Console.WriteLine("     To run a Command simply type the name of the command followed by the name of each parameter and it's value.");
             Console.WriteLine("     For example to run a command called \"sample\" you would just type: sample ");
@@ -26,7 +22,8 @@ namespace reflectionCli {
             Console.WriteLine("     To Exit, simply type \"exit\" ");
         }
 
-        public bool ExitVal()   {
+        public bool ExitVal()
+        {
             return false;
         }
     }

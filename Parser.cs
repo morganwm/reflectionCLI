@@ -1,63 +1,70 @@
 ﻿using System;
-using System.Linq;
-using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
-using System.Runtime;
-using System.Runtime.Loader;
 
-namespace reflectionCli {
-
-    public static class Parser    {
-        public static Boolean Parse(string commandString) {
-            object result = new nullCommand();
+namespace ReflectionCli
+{
+    public static class Parser
+    {
+        public static bool Parse(string commandString)
+        {
+            object result = new NullCommand();
             try {
-
-                string asmname;
+                string asmName;
                 string commandName;
 
-                if (commandString == null || commandString ==  "") {
+                if (commandString == null || commandString == string.Empty) {
                     throw new Exception($"Please Enter the name of a command");
                 }
 
-                List<TypeInfo> commandtypes = new List<TypeInfo>();
+                var commandtypes = new List<TypeInfo>();
 
-                //switch to search in a specific assembly
-                if (commandString[0] == '@')
-                {
-                    //search specific assembly
-                    asmname = commandString.Split(' ').ToList()[0].Remove(0,1);
-                    commandName = commandString.Split(' ').ToList()[1];
-                    Program.activeasm.Where(r => r.Value.GetName().Name == asmname).Select(a => a.Value).ToList().ForEach(x => {
-                        x.DefinedTypes.Where(z => (
-                            //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                            z.ImplementedInterfaces.Where(a => (a.Name == "ICommand"))
-                                                    .ToList()
-                                                    .Count != 0
-                        ))
-                        .Where(a => (a.Name == commandName))
+                // switch to search in a specific assembly
+                if (commandString[0] == '@') {
+                    // search specific assembly
+                    asmName = commandString.Split(' ')
+                        .ToList()[0]
+                        .Remove(0, 1);
+
+                    commandName = commandString.Split(' ')
+                        .ToList()[1];
+
+                    Program.ActiveAsm.Where(t => t.Value.GetName().Name == asmName)
+                        .Select(u => u.Value)
                         .ToList()
-                        .ForEach(y => commandtypes.Add(y));
-                    });
-                }
-                else {
-                    //search for commands in all active assemblies
-                    commandName = commandString.Split(' ').ToList()[0];
-                    Program.activeasm.Select(a => a.Value).ToList().ForEach(x => {
-                        x.DefinedTypes.Where(z => (
-                            //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                            z.ImplementedInterfaces.Where(a => (a.Name == "ICommand"))
-                                                    .ToList()
-                                                    .Count != 0
-                        ))
-                        .Where(a => (a.Name == commandName))
+                        .ForEach(u =>
+                        {
+                            u.DefinedTypes.Where(v => (
+                                // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
+                                v.ImplementedInterfaces.Where(x => x.Name == "ICommand")
+                                    .ToList()
+                                    .Count != 0
+                            ))
+                            .Where(v => (v.Name == commandName))
+                            .ToList()
+                            .ForEach(v => commandtypes.Add(v));
+                        });
+                } else {
+                    // search for commands in all active assemblies
+                    commandName = commandString.Split(' ')
+                        .ToList()[0];
+
+                    Program.ActiveAsm.Select(t => t.Value)
                         .ToList()
-                        .ForEach(y => commandtypes.Add(y));
-                    });
+                        .ForEach(t =>
+                        {
+                            t.DefinedTypes.Where(u => (
+                                // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
+                                u.ImplementedInterfaces.Where(v => v.Name == "ICommand")
+                                    .ToList()
+                                    .Count != 0
+                            ))
+                            .Where(u => u.Name == commandName)
+                            .ToList()
+                            .ForEach(u => commandtypes.Add(u));
+                        });
                 }
-
-
-
 
                 // var commandtypes = Assembly.GetEntryAssembly().DefinedTypes
                 //                     .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
@@ -70,7 +77,8 @@ namespace reflectionCli {
 
                 if (commandtypes.Count > 1) {
                     string msg = $"multiple commands found:{Environment.NewLine}";
-                    commandtypes.ForEach(x => { msg = msg + $"   {x.FullName}{Environment.NewLine}";});
+                    commandtypes.ForEach(t => { msg = msg + $"   {t.FullName}{Environment.NewLine}"; });
+
                     throw new Exception(msg);
                 }
 
@@ -82,17 +90,15 @@ namespace reflectionCli {
 
                 if (paramsinfo.Length == 0) {
                     result = Activator.CreateInstance(type, null);
-                }
-                else {
+                } else {
                     result = Activator.CreateInstance(type, args);
                 }
-            }
-            catch (Exception ex) {
-                result = (Program.verbose) ?  new error(ex.ToString()) : new error(ex.Message);
+            } catch (Exception ex) {
+                result = Program.Verbose ? new Error(ex.ToString()) : new Error(ex.Message);
             }
 
-            //this has to be done through reflection because anything loaded at runtime won't have the same interface so a cast to ICommand would break
-            Boolean exitbool = (Boolean)result.GetType().GetMethod("ExitVal").Invoke(result, null);
+            // his has to be done through reflection because anything loaded at runtime won't have the same interface so a cast to ICommand would break
+            bool exitbool = (bool)result.GetType().GetMethod("ExitVal").Invoke(result, null);
             return exitbool;
         }
     }

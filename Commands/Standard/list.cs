@@ -1,52 +1,60 @@
 using System;
 using System.Linq;
-using System.IO;
-using System.Collections.Generic;
 using System.Reflection;
 
-
-namespace reflectionCli {
-
-    public class list : ICommand    {
-
-        public list() {
+namespace ReflectionCli
+{
+    public class List : ICommand
+    {
+        public List()
+        {
             Console.WriteLine("Valid Commands:");
-            Program.activeasm.ToList().ForEach(x => {
-                Console.WriteLine($"{Environment.NewLine}   - {x.Value.FullName}: {x.Key}");
-                x.Value.DefinedTypes.Where(z => (
-                    //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                    z.ImplementedInterfaces.Where(a => (a.Name == "ICommand"))
-                                            .ToList()
-                                            .Count != 0
+
+            Program.ActiveAsm.ToList().ForEach(t =>
+            {
+                Console.WriteLine($"{Environment.NewLine}   - {t.Value.FullName}: {t.Key}");
+
+                t.Value.DefinedTypes.Where(u => (
+                    // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
+                    u.ImplementedInterfaces.Where(v => v.Name == "ICommand")
+                        .ToList()
+                        .Count != 0
                 ))
                 .ToList()
-                .ForEach(y => Console.WriteLine($"       - {y.Name}"));
+                .ForEach(v => Console.WriteLine($"       - {v.Name}"));
             });
         }
 
-        public list(string name) {
+        public List(string name)
+        {
             Console.WriteLine($"Valid Commands for {name}:");
-            Program.activeasm.ToList().ForEach(x => {
-                Console.WriteLine($"{Environment.NewLine}   - {x.Value.FullName}: {x.Key}");
-                x.Value.DefinedTypes.Where(z => (
-                    //this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                    z.ImplementedInterfaces.Where(a => (a.Name == "ICommand"))
-                                            .ToList()
-                                            .Count != 0
+            Program.ActiveAsm.ToList().ForEach(t =>
+            {
+                Console.WriteLine($"{Environment.NewLine}   - {t.Value.FullName}: {t.Key}");
+                t.Value.DefinedTypes.Where(u => (
+                    // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
+                    u.ImplementedInterfaces.Where(v => v.Name == "ICommand")
+                        .ToList()
+                        .Count != 0
                 ))
-                .Where(a => (a.Name == name))
+                .Where(u => u.Name == name)
                 .ToList()
-                .ForEach(y => {
-                    y.AsType().GetConstructors().ToList().ForEach(z => {
+                .ForEach(u =>
+                {
+                    u.AsType().GetConstructors().ToList().ForEach(v =>
+                    {
                         Console.WriteLine($"{Environment.NewLine} +       - {name}");
-                        z.GetParameters().ToList().ForEach(a => {
-                            Console.WriteLine($"        - {a.Name} ({a.ParameterType.FullName})");
+
+                        v.GetParameters().ToList().ForEach(x =>
+                        {
+                            Console.WriteLine($"        - {x.Name} ({x.ParameterType.FullName})");
                         });
                     });
                 });
             });
         }
-        public bool ExitVal()   {
+        public bool ExitVal()
+        {
             return false;
         }
     }
