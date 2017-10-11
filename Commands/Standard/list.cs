@@ -45,9 +45,9 @@ namespace ReflectionCli
                     {
                         Console.WriteLine($"{Environment.NewLine} +       - {name}");
 
-                        v.GetParameters().ToList().ForEach(x =>
+                        v.GetParameters().ToList().ForEach(w =>
                         {
-                            Console.WriteLine($"        - {x.Name} ({x.ParameterType.FullName})");
+                            Console.WriteLine($"        - {w.Name} ({w.ParameterType.FullName})");
                         });
                     });
                 });
