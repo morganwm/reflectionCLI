@@ -64,7 +64,7 @@ namespace reflectionCli
                     throw new Exception($"{Environment.NewLine} Assembly could not be created {Environment.NewLine}");
                 }
 
-                //need to check and
+                //need to check and validate ICommand
                 var tempicommand = TempAsm.GetTypes().ToList().Where(x => (x.Name == "ICommand")).ToList();
 
                 if (tempicommand.Count == 0) {
@@ -83,7 +83,7 @@ namespace reflectionCli
                                     .ToList();
 
                 if (extvalinfo.Count == 0) {
-                    throw new Exception("ICommand did not return the correct exit value");
+                    throw new Exception("ICommand does not return the correct exit value");
                 }
 
                 Program.activeasm.Add(Guid.NewGuid() ,TempAsm);
