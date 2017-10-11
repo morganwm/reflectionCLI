@@ -4,9 +4,9 @@ using System.Reflection;
 
 namespace ReflectionCli
 {
-    public class list : ICommand
+    public class List : ICommand
     {
-        public list()
+        public List()
         {
             Console.WriteLine("Valid Commands:");
 
@@ -25,7 +25,7 @@ namespace ReflectionCli
             });
         }
 
-        public list(string name)
+        public List(string name)
         {
             Console.WriteLine($"Valid Commands for {name}:");
             Program.ActiveAsm.ToList().ForEach(t =>

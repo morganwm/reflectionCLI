@@ -41,7 +41,7 @@ namespace ReflectionCli
                                     .ToList()
                                     .Count != 0
                             ))
-                            .Where(v => (v.Name == commandName))
+                            .Where(v => v.Name.Equals(commandName, StringComparison.CurrentCultureIgnoreCase))
                             .ToList()
                             .ForEach(v => commandtypes.Add(v));
                         });
@@ -60,7 +60,7 @@ namespace ReflectionCli
                                     .ToList()
                                     .Count != 0
                             ))
-                            .Where(u => u.Name == commandName)
+                            .Where(u => u.Name.Equals(commandName, StringComparison.CurrentCultureIgnoreCase))
                             .ToList()
                             .ForEach(u => commandtypes.Add(u));
                         });
