@@ -1,6 +1,6 @@
 # reflectionCLI
 
-[<img src="https://morganwatsonmorris.visualstudio.com/_apis/public/build/definitions/a14facec-7c65-4085-8ec8-06dbb3c307a7/1/badge/>](https://morganwatsonmorris.visualstudio.com/ReflectionLCI/_build/index?definitionId=a14facec-7c65-4085-8ec8-06dbb3c307a7)
+[<img src="https://morganwatsonmorris.visualstudio.com/_apis/public/build/definitions/a14facec-7c65-4085-8ec8-06dbb3c307a7/1/badge/>](https://morganwatsonmorris.visualstudio.com/ReflectionCLI/_build/index?definitionId=1)
 
 This is a dotNET Core based Command Line Interface that takes advantage of reflection in order to call commands, even from assemblies (either precompiled or built in memory by the Roslyn compiler) loaded at runtime.
 
