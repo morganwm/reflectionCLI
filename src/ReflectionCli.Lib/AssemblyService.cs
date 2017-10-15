@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace ReflectionCli
+namespace ReflectionCli.Lib
 {
     public class AssemblyService : IAssemblyService
     {
