@@ -2,7 +2,7 @@ namespace ReflectionCli.Lib
 {
     public interface ICommand
 	{
-		void Run();
+		//void Run();
         bool ExitVal();
     }
 }
