@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ReflectionCli
+namespace ReflectionCli.Lib
 {
     public class VariableService : IVariableService
     {

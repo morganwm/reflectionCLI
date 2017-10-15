@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ReflectionCli.Lib;
 
 namespace ReflectionCli.extended
 {
@@ -7,9 +8,18 @@ namespace ReflectionCli.extended
     {
         public class Parrot : ICommand
         {
-            public Parrot(List<string> input)
+			private readonly IAssemblyService _assemblyService;
+            private readonly IVariableService _variableService;
+
+            public Parrot(IAssemblyService assemblyService, IVariableService variableService)
             {
-                input.ForEach(x => Console.WriteLine(x));
+                _assemblyService = assemblyService;
+                _variableService = variableService;
+            }
+
+            public void Run(List<string> input) 
+            {
+				input.ForEach(x => Console.WriteLine(x));
             }
 
             public bool ExitVal()

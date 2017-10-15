@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace ReflectionCli
+namespace ReflectionCli.Lib
 {
     public interface IAssemblyService
     {

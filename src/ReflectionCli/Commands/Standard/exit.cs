@@ -1,10 +1,12 @@
+using ReflectionCli.Lib;
+
 namespace ReflectionCli
 {
-    public class NullCommand : ICommand
+    public class Exit : ICommand
     {
         public bool ExitVal()
         {
-            return false;
+            return true;
         }
     }
 }
