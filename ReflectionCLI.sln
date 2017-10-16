@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReflectionCli.Lib", "src\Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReflectionCLI", "src\ReflectionCli\ReflectionCLI.csproj", "{F940E8AE-4DCE-4574-9C9B-7ECB065481CB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{55FBFD08-1B0A-4D82-854D-8914198CE107}"
+	ProjectSection(SolutionItems) = preProject
+		StyleCopRules.ruleset = StyleCopRules.ruleset
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

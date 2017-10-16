@@ -5,7 +5,7 @@ namespace ReflectionCli
 {
     public class Help : ICommand
     {
-        public Help()
+        public void Run()
         {
             Console.WriteLine();
             Console.WriteLine("     To run a Command simply type the name of the command followed by the name of each parameter and it's value.");
@@ -21,11 +21,6 @@ namespace ReflectionCli
             Console.WriteLine("     samplefunction -inputarray element1 element2 element3");
             Console.WriteLine();
             Console.WriteLine("     To Exit, simply type \"exit\" ");
-        }
-
-        public bool ExitVal()
-        {
-            return false;
         }
     }
 }

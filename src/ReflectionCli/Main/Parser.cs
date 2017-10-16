@@ -8,14 +8,14 @@ namespace ReflectionCli
 {
     public static class Parser
     {
-        public static bool Parse(string commandString)
+        public static void Parse(string commandString)
         {
-            object result = new NullCommand();
+            object result;
             try {
                 string asmName;
                 string commandName;
 
-                if (commandString == null || commandString == string.Empty) {
+                if (string.IsNullOrEmpty(commandString)) {
                     throw new Exception($"Please Enter the name of a command");
                 }
 
@@ -38,7 +38,7 @@ namespace ReflectionCli
                         {
                             u.DefinedTypes.Where(v => (
                                 // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                                v.ImplementedInterfaces.Where(w => w.Name == "ICommand")
+                                v.ImplementedInterfaces.Where(w => w.Name == nameof(ICommand))
                                     .ToList()
                                     .Count != 0
                             ))
@@ -57,7 +57,7 @@ namespace ReflectionCli
                         {
                             t.DefinedTypes.Where(u => (
                                 // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                                u.ImplementedInterfaces.Where(v => v.Name == "ICommand")
+                                u.ImplementedInterfaces.Where(v => v.Name == nameof(ICommand))
                                     .ToList()
                                     .Count != 0
                             ))
@@ -93,9 +93,6 @@ namespace ReflectionCli
             } catch (Exception ex) {
                 result = new Error( Program.Verbose ? ex.ToString() : ex.Message );
             }
-
-            // his has to be done through reflection because anything loaded at runtime won't have the same interface so a cast to ICommand would break
-            return (bool)result.GetType().GetMethod("ExitVal").Invoke(result, null);
         }
     }
 }

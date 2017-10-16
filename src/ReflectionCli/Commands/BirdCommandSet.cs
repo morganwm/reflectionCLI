@@ -21,33 +21,23 @@ namespace ReflectionCli.extended
             {
 				input.ForEach(x => Console.WriteLine(x));
             }
-
-            public bool ExitVal()
-            {
-                return false;
-            }
         }
 
         public class Parakeet : ICommand
         {
-            public Parakeet(List<string> input)
+            public void Run(List<string> input)
             {
                 input.ForEach(x => Console.WriteLine($"  +{x}"));
             }
 
-            public Parakeet(List<string> input, int number)
+            public void Run(List<string> input, int number)
             {
                 input.ForEach(x => Console.WriteLine($"     {number}: {x}"));
             }
 
-            public Parakeet(List<int> inputints, int number)
+            public void Run(List<int> inputints, int number)
             {
                 inputints.ForEach(x => Console.WriteLine($"     {number}: {x}"));
-            }
-
-            public bool ExitVal()
-            {
-                return false;
             }
         }
     }

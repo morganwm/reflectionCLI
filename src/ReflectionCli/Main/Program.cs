@@ -4,34 +4,45 @@ using System.Reflection;
 using ReflectionCli.Lib;
 
 using Microsoft.Extensions.DependencyInjection;
+using ReflectionCli.Lib.Enums;
 
 namespace ReflectionCli
 {
     public class Program
     {
+        public static bool ShutDown { get; set; }
+
         public static Dictionary<Guid, Assembly> ActiveAsm;
-        public static bool Verbose;
 
         public static void Main(string[] args)
         {
             var serviceProvider = new ServiceCollection()
-                .AddScoped<IAssemblyService, AssemblyService>()
+				.AddScoped<IAssemblyService, AssemblyService>()
+                .AddSingleton<ILoggingService, LoggingService>()
                 .AddScoped<IVariableService, VariableService>();
 
             ActiveAsm = new Dictionary<Guid, Assembly>
             {
                 { Guid.NewGuid(), Assembly.GetEntryAssembly() },
             };
-            Verbose = true;
 
-            while (true) {
-                Console.WriteLine();
-                Console.WriteLine("Enter command (help to display help):");
-
-                if (Parser.Parse(Console.ReadLine())) {
-                    break;
-                }
+            if (args.Length > 0) {
+                Parser.Parse(string.Join(" ", args));
+            } else {
+                TerminalMode();
             }
+        }
+
+        public static void TerminalMode()
+		{
+			Console.WriteLine("Enter command (help to display help):");
+			Console.WriteLine();
+
+			while (!ShutDown) {
+				Parser.Parse(Console.ReadLine());
+
+				Console.WriteLine();
+			}
         }
     }
 }
