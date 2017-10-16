@@ -39,9 +39,13 @@ namespace ReflectionCli
 			Console.WriteLine();
 
 			while (!ShutDown) {
-				Parser.Parse(Console.ReadLine());
+                try {
+                    Parser.Parse(Console.ReadLine());
 
-				Console.WriteLine();
+                    Console.WriteLine();
+                } catch {
+                    Console.WriteLine("A fatal exception occured");
+                }
 			}
         }
     }
