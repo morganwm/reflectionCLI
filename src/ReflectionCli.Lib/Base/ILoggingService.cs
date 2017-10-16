@@ -1,4 +1,6 @@
 ﻿using System;
+using ReflectionCli.Lib.Enums;
+
 namespace ReflectionCli.Lib
 {
     public interface ILoggingService
@@ -8,5 +10,10 @@ namespace ReflectionCli.Lib
 		void LogWarning(string warning);
 		void LogError(string error);
         void LogError(Exception ex);
+
+        Verbosity GetVerbosity();
+        void SetVerbosity(Verbosity verbosity);
+
+        string GetLastTextWrittenInConsole();
     }
 }
