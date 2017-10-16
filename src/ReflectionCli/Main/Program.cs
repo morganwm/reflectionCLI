@@ -16,9 +16,9 @@ namespace ReflectionCli
         public static void Main(string[] args)
         {
             var serviceProvider = new ServiceCollection()
-				.AddScoped<IAssemblyService, AssemblyService>()
+                .AddSingleton<IAssemblyService, AssemblyService>()
                 .AddSingleton<ILoggingService, LoggingService>()
-                .AddScoped<IVariableService, VariableService>();
+                .AddSingleton<IVariableService, VariableService>();
 
             ActiveAsm = new Dictionary<Guid, Assembly>
             {
@@ -33,11 +33,11 @@ namespace ReflectionCli
         }
 
         public static void TerminalMode()
-		{
-			Console.WriteLine("Enter command (help to display help):");
-			Console.WriteLine();
+        {
+            Console.WriteLine("Enter command (help to display help):");
+            Console.WriteLine();
 
-			while (!ShutDown) {
+            while (!ShutDown) {
                 try {
                     Parser.Parse(Console.ReadLine());
 
@@ -45,7 +45,7 @@ namespace ReflectionCli
                 } catch {
                     Console.WriteLine("A fatal exception occured");
                 }
-			}
+            }
         }
     }
 }
