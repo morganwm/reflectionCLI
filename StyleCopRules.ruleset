@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="Rules for StyleCop.Analyzers" Description="Code analysis rules for StyleCop.Analyzers.csproj." ToolsVersion="15.0">
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="CLASS0001" Action="None" />
     <Rule Id="SA1002" Action="None" />
     <Rule Id="SA1003" Action="None" />
     <Rule Id="SA1008" Action="None" />
@@ -14,6 +15,7 @@
     <Rule Id="SA1131" Action="None" />
     <Rule Id="SA1200" Action="None" />
     <Rule Id="SA1201" Action="None" />
+    <Rule Id="SA1210" Action="None" />
     <Rule Id="SA1300" Action="None" />
     <Rule Id="SA1309" Action="None" />
     <Rule Id="SA1310" Action="None" />

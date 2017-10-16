@@ -7,8 +7,7 @@ namespace ReflectionCli.extended
     public class BirdCommandSet
     {
         public class Parrot : ICommand
-        { 
-
+        {
             public void Run(List<string> input) 
             {
                 input.ForEach(x => Console.WriteLine(x));
