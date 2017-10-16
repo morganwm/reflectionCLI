@@ -9,22 +9,22 @@ namespace ReflectionCli
 {
     public static class ArgumentsParser
     {
-        public static object[] ParseArgumentsFromString(string input, Type type, ref ConstructorInfo constructor)
+        public static object[] ParseArgumentsFromString(string input, Type type, ref MethodInfo method)
         {
             var outval = new List<object>();
 
             // no input case
             var parts = input.Split(new char[] { ' ' }, 2);
             if (parts.Length < 2) {
-                var constructorList = type.GetConstructors()
+                var methodlistList = type.GetMethods()
                     .Where(t => t.GetParameters().Count() == 0)
                     .ToList();
 
-                if (constructorList.Count == 0) {
+                if (methodlistList.Count == 0) {
                     throw new Exception($"No Constructors for {type.Name} have 0 arguments {Environment.NewLine}");
                 }
 
-                constructor = constructorList[0];
+                method = methodlistList[0];
 
                 return null;
             }
@@ -75,26 +75,27 @@ namespace ReflectionCli
             }
 
             // find constructor whos vartiable names match those given
-            var matchingConstructors = type.GetConstructors()
+            var matchingmethods = type.GetMethods()
+                .Where(t => t.Name == "Run")
                 .Where(t => t.GetParameters()
                     .Select(u => u.Name)
                     .Intersect(paramPackages.Select(u => u.Key.Value.Remove(0, 1))).Count() == paramPackages.Count()
                         && paramPackages.Select(u => u.Key.Value.Remove(0, 1))
                             .Intersect(t.GetParameters().Select(u => u.Name)).Count() == t.GetParameters().Count());
 
-            if (matchingConstructors == null) {
+            if (matchingmethods == null) {
                 throw new Exception($"No Constructors for {type.Name} have matching input names to those Provided.");
             }
 
-            if (matchingConstructors.Count() > 1) {
+            if (matchingmethods.Count() > 1) {
                 throw new Exception($"Multiple Constructors for {type.Name} have matching input names, this is an issue with the way that {type.Name} was written.");
             }
 
-            ConstructorInfo chosenConstructor = matchingConstructors.ToList()[0];
-            for (int i = 0; i < chosenConstructor.GetParameters().Count(); i++) {
-                Type outType = chosenConstructor.GetParameters().ToList()[i].ParameterType;
+            MethodInfo chosenmethod = matchingmethods.ToList()[0];
+            for (int i = 0; i < chosenmethod.GetParameters().Count(); i++) {
+                Type outType = chosenmethod.GetParameters().ToList()[i].ParameterType;
                 var tempObject = paramPackages
-                    .Where(t => t.Key.Value.Remove(0, 1) == chosenConstructor.GetParameters().ToList()[i].Name)
+                    .Where(t => t.Key.Value.Remove(0, 1) == chosenmethod.GetParameters().ToList()[i].Name)
                     .Select(y => y.Value)
                     .ToList()[0];
 
@@ -134,7 +135,7 @@ namespace ReflectionCli
                 }
             }
 
-            constructor = chosenConstructor;
+            method = chosenmethod;
             return outval.ToArray();
         }
     }

@@ -34,7 +34,7 @@ namespace ReflectionCli
                 Console.WriteLine($"{Environment.NewLine}   - {t.Value.FullName}: {t.Key}");
                 t.Value.DefinedTypes.Where(u => (
                     // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                    u.ImplementedInterfaces.Where(v => v.Name == "ICommand")
+                    u.ImplementedInterfaces.Where(v => v.Name == nameof(ICommand))
                         .ToList()
                         .Count != 0
                 ))
@@ -42,7 +42,11 @@ namespace ReflectionCli
                 .ToList()
                 .ForEach(u =>
                 {
-                    u.AsType().GetConstructors().ToList().ForEach(v =>
+                    u.AsType()
+                    .GetMethods()
+                    .Where(v => v.Name == "Run")
+                    .ToList()
+                    .ForEach(v =>
                     {
                         Console.WriteLine($"{Environment.NewLine} +       - {name}");
 
