@@ -9,27 +9,48 @@ namespace ReflectionCli
 {
     public class Program
     {
-        public static Dictionary<Guid, Assembly> ActiveAsm;
-        public static bool Verbose;
+        public static bool ShutDown { get; set; }
+
+        public static IServiceProvider ServiceProvider;
 
         public static void Main(string[] args)
         {
-            var serviceProvider = new ServiceCollection()
-                .AddScoped<IAssemblyService, AssemblyService>()
-                .AddScoped<IVariableService, VariableService>();
+            var serviceCollection = new ServiceCollection()
+                .AddSingleton<IAssemblyService, AssemblyService>()
+                .AddSingleton<ILoggingService, LoggingService>()
+                .AddSingleton<IParserService, ParserService>()
+                .AddSingleton<IVariableService, VariableService>();
 
-            ActiveAsm = new Dictionary<Guid, Assembly>
-            {
-                { Guid.NewGuid(), Assembly.GetEntryAssembly() },
-            };
-            Verbose = true;
+            ServiceProvider = serviceCollection.BuildServiceProvider();
 
-            while (true) {
-                Console.WriteLine();
-                Console.WriteLine("Enter command (help to display help):");
+            var parseservice = ServiceProvider.GetService<IParserService>();
 
-                if (Parser.Parse(Console.ReadLine())) {
-                    break;
+            var assemblyservice = ServiceProvider.GetService<IAssemblyService>();
+
+            var loggingservice = ServiceProvider.GetService<ILoggingService>();
+
+            assemblyservice.Add(Assembly.GetEntryAssembly());
+
+            if (args.Length > 0) {
+                parseservice.Parse(string.Join(" ", args));
+            } else {
+                TerminalMode(parseservice, loggingservice);
+            }
+        }
+
+        public static void TerminalMode(IParserService parseservice, ILoggingService loggingservice)
+        {
+            Console.WriteLine("Enter command (help to display help):");
+            Console.WriteLine();
+
+            while (!ShutDown) {
+                try {
+                    Console.WriteLine();
+                    parseservice.Parse(Console.ReadLine());
+                    Console.WriteLine();
+                } catch (Exception ex) {
+                    Console.WriteLine();
+                    loggingservice.LogError(ex);
                 }
             }
         }

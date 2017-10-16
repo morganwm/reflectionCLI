@@ -6,23 +6,34 @@ using ReflectionCli.Lib;
 
 namespace ReflectionCli
 {
-    public static class Parser
+    public class ParserService : IParserService
     {
-        public static bool Parse(string commandString)
+        private readonly IAssemblyService _assemblyservice;
+        private readonly ILoggingService _loggingservice;
+
+        public ParserService(IAssemblyService assemblyservice, ILoggingService loggingservice)
         {
-            object result = new NullCommand();
-            try {
+            _assemblyservice = assemblyservice;
+            _loggingservice = loggingservice;
+        }
+
+        public void Parse(string commandString)
+        {
+            try
+            {
                 string asmName;
                 string commandName;
 
-                if (commandString == null || commandString == string.Empty) {
+                if (string.IsNullOrEmpty(commandString))
+                {
                     throw new Exception($"Please Enter the name of a command");
                 }
 
                 var commandtypes = new List<TypeInfo>();
 
                 // switch to search in a specific assembly
-                if (commandString[0] == '@') {
+                if (commandString[0] == '@')
+                {
                     // search specific assembly
                     asmName = commandString.Split(' ')
                         .ToList()[0]
@@ -31,14 +42,13 @@ namespace ReflectionCli
                     commandName = commandString.Split(' ')
                         .ToList()[1];
 
-                    Program.ActiveAsm.Where(t => t.Value.GetName().Name == asmName)
-                        .Select(u => u.Value)
+                    _assemblyservice.Get().Where(t => t.GetName().Name == asmName)
                         .ToList()
                         .ForEach(u =>
                         {
                             u.DefinedTypes.Where(v => (
                                 // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                                v.ImplementedInterfaces.Where(w => w.Name == "ICommand")
+                                v.ImplementedInterfaces.Where(w => w.Name == nameof(ICommand))
                                     .ToList()
                                     .Count != 0
                             ))
@@ -46,18 +56,20 @@ namespace ReflectionCli
                             .ToList()
                             .ForEach(v => commandtypes.Add(v));
                         });
-                } else {
+                }
+                else
+                {
                     // search for commands in all active assemblies
                     commandName = commandString.Split(' ')
                         .ToList()[0];
 
-                    Program.ActiveAsm.Select(t => t.Value)
+                    _assemblyservice.Get()
                         .ToList()
                         .ForEach(t =>
                         {
                             t.DefinedTypes.Where(u => (
                                 // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                                u.ImplementedInterfaces.Where(v => v.Name == "ICommand")
+                                u.ImplementedInterfaces.Where(v => v.Name == nameof(ICommand))
                                     .ToList()
                                     .Count != 0
                             ))
@@ -67,16 +79,13 @@ namespace ReflectionCli
                         });
                 }
 
-                // var commandtypes = Assembly.GetEntryAssembly().DefinedTypes
-                //                     .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
-                //                     .Where(x => (x.Name == commandName))
-                //                     .ToList();
-
-                if (commandtypes.Count == 0) {
+                if (commandtypes.Count == 0)
+                {
                     throw new Exception($"unable to find command {commandName}");
                 }
 
-                if (commandtypes.Count > 1) {
+                if (commandtypes.Count > 1)
+                {
                     string msg = $"multiple commands found:{Environment.NewLine}";
                     commandtypes.ForEach(t => { msg = msg + $"   {t.FullName}{Environment.NewLine}"; });
 
@@ -85,17 +94,38 @@ namespace ReflectionCli
 
                 Type type = commandtypes[0].AsType();
 
-                ConstructorInfo constructorInfo = null;
-                var args = ArgumentsParser.ParseArgumentsFromString(commandString, type, ref constructorInfo);
-                ParameterInfo[] paramsinfo = constructorInfo.GetParameters();
+                var constructors = type.GetConstructors();
 
-                result = Activator.CreateInstance(type, (paramsinfo.Length == 0) ? null : args );
-            } catch (Exception ex) {
-                result = new Error( Program.Verbose ? ex.ToString() : ex.Message );
+                if (constructors.Count() > 1)
+                {
+                    throw new Exception($"Multiple constructors found for {commandName}");
+                }
+
+                var constructorparams = constructors[0].GetParameters()
+                    .Select(t => Program.ServiceProvider.GetService(t.ParameterType));
+
+                object[] constructorparamsarray = new object[constructorparams.Count()];
+
+                for (int i = 0; i < constructorparams.Count(); i++)
+                {
+                    constructorparamsarray[i] = constructorparams.ToArray()[i];
+                }
+
+                bool nullconstructor = constructorparams.Count() == 0;
+                nullconstructor = nullconstructor || (constructorparams.Where(t => t != null).Count() == 0);
+
+                var functioninstance = nullconstructor ? Activator.CreateInstance(type) : Activator.CreateInstance(type, constructorparamsarray);
+
+                MethodInfo methodinfo = null;
+                var args = ArgumentsParser.ParseArgumentsFromString(commandString, type, ref methodinfo);
+                ParameterInfo[] paramsinfo = methodinfo.GetParameters();
+
+                methodinfo.Invoke(functioninstance, args);
             }
-
-            // his has to be done through reflection because anything loaded at runtime won't have the same interface so a cast to ICommand would break
-            return (bool)result.GetType().GetMethod("ExitVal").Invoke(result, null);
+            catch (Exception ex)
+            {
+                _loggingservice.LogError(ex);
+            }
         }
     }
 }

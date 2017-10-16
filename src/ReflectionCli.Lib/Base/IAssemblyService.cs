@@ -6,11 +6,8 @@ namespace ReflectionCli.Lib
 {
     public interface IAssemblyService
     {
-        Dictionary<string, Assembly> Get();
-
-        Assembly Get(string name);
-        void Set(Dictionary<string, Assembly> data);
-
-        void Set( string name, Assembly data);
+        List<Assembly> Get();
+        void Set(List<Assembly> data);
+        void Add(Assembly data);
     }
 }

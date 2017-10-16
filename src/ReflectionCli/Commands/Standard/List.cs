@@ -7,17 +7,26 @@ namespace ReflectionCli
 {
     public class List : ICommand
     {
-        public List()
+        private readonly ILoggingService _loggingService;
+        private readonly IAssemblyService _assemblyService;
+
+        public List(ILoggingService loggingService, IAssemblyService assemblyService)
+        {
+            _loggingService = loggingService;
+            _assemblyService = assemblyService;
+        }
+
+        public void Run()
         {
             Console.WriteLine("Valid Commands:");
 
-            Program.ActiveAsm.ToList().ForEach(t =>
+            _assemblyService.Get().ToList().ForEach(t =>
             {
-                Console.WriteLine($"{Environment.NewLine}   - {t.Value.FullName}: {t.Key}");
+                Console.WriteLine($"{Environment.NewLine}   - {t.FullName}");
 
-                t.Value.DefinedTypes.Where(u => (
+                t.DefinedTypes.Where(u => (
                     // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                    u.ImplementedInterfaces.Where(v => v.Name == "ICommand")
+                    u.ImplementedInterfaces.Where(v => v.Name == nameof(ICommand))
                         .ToList()
                         .Count != 0
                 ))
@@ -26,15 +35,15 @@ namespace ReflectionCli
             });
         }
 
-        public List(string name)
+        public void Run(string name)
         {
             Console.WriteLine($"Valid Commands for {name}:");
-            Program.ActiveAsm.ToList().ForEach(t =>
+            _assemblyService.Get().ToList().ForEach(t =>
             {
-                Console.WriteLine($"{Environment.NewLine}   - {t.Value.FullName}: {t.Key}");
-                t.Value.DefinedTypes.Where(u => (
+                Console.WriteLine($"{Environment.NewLine}   - {t.FullName}");
+                t.DefinedTypes.Where(u => (
                     // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                    u.ImplementedInterfaces.Where(v => v.Name == "ICommand")
+                    u.ImplementedInterfaces.Where(v => v.Name == nameof(ICommand))
                         .ToList()
                         .Count != 0
                 ))
@@ -42,7 +51,11 @@ namespace ReflectionCli
                 .ToList()
                 .ForEach(u =>
                 {
-                    u.AsType().GetConstructors().ToList().ForEach(v =>
+                    u.AsType()
+                    .GetMethods()
+                    .Where(v => v.Name == "Run")
+                    .ToList()
+                    .ForEach(v =>
                     {
                         Console.WriteLine($"{Environment.NewLine} +       - {name}");
 
@@ -53,10 +66,6 @@ namespace ReflectionCli
                     });
                 });
             });
-        }
-        public bool ExitVal()
-        {
-            return false;
         }
     }
 }
