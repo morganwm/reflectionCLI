@@ -12,7 +12,7 @@ namespace ReflectionCli
             _loggingService = loggingService;
         }
 
-        public void Run(IParam param)
+        public void Run()
         {
             _loggingService.LogInfo("Shutting down....");
 
