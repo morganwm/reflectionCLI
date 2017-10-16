@@ -33,8 +33,8 @@ namespace ReflectionCli.Lib
         public void LogError(Exception ex)
         {
             if (Verbosity <= Verbosity.Error) {
-                _textToBeWrittenInConsole = $"[ERR] {ex.Message}";
-                Console.WriteLine($"[ERR] {ex.Message}");
+                _textToBeWrittenInConsole = $"[ERR] {ex.ToString()}";
+                Console.WriteLine($"[ERR] {ex.ToString()}");
             }
         }
 
