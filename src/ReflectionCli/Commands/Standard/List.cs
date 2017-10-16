@@ -42,7 +42,11 @@ namespace ReflectionCli
                 .ToList()
                 .ForEach(u =>
                 {
-                    u.AsType().GetConstructors().ToList().ForEach(v =>
+                    u.AsType()
+                    .GetMethods()
+                    .Where(v => v.Name == "Run")
+                    .ToList()
+                    .ForEach(v =>
                     {
                         Console.WriteLine($"{Environment.NewLine} +       - {name}");
 

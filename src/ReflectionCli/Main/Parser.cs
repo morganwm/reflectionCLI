@@ -83,9 +83,9 @@ namespace ReflectionCli
 
             Type type = commandtypes[0].AsType();
 
-            ConstructorInfo constructorInfo = null;
-            var args = ArgumentsParser.ParseArgumentsFromString(commandString, type, ref constructorInfo);
-            ParameterInfo[] paramsinfo = constructorInfo.GetParameters();
+            MethodInfo methodinfo = null;
+            var args = ArgumentsParser.ParseArgumentsFromString(commandString, type, ref methodinfo);
+            ParameterInfo[] paramsinfo = methodinfo.GetParameters();
 
             Activator.CreateInstance(type, (paramsinfo.Length == 0) ? null : args );
         }
