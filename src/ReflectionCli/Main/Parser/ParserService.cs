@@ -6,9 +6,18 @@ using ReflectionCli.Lib;
 
 namespace ReflectionCli
 {
-    public class Parser
+    public class ParserService : IParserService
     {
-        public static void Parse(string commandString)
+        private readonly IAssemblyService _assemblyservice;
+        private readonly ILoggingService _loggingservice;
+
+        public ParserService(IAssemblyService assemblyservice, ILoggingService loggingservice)
+        {
+            _assemblyservice = assemblyservice;
+            _loggingservice = loggingservice;
+        }
+
+        public void Parse(string commandString)
         {
             string asmName;
             string commandName;
@@ -29,8 +38,7 @@ namespace ReflectionCli
                 commandName = commandString.Split(' ')
                     .ToList()[1];
 
-                Program.ActiveAsm.Where(t => t.Value.GetName().Name == asmName)
-                    .Select(u => u.Value)
+                _assemblyservice.Get().Where(t => t.GetName().Name == asmName)
                     .ToList()
                     .ForEach(u =>
                     {
@@ -49,7 +57,7 @@ namespace ReflectionCli
                 commandName = commandString.Split(' ')
                     .ToList()[0];
 
-                Program.ActiveAsm.Select(t => t.Value)
+                _assemblyservice.Get()
                     .ToList()
                     .ForEach(t =>
                     {
@@ -84,10 +92,16 @@ namespace ReflectionCli
             Type type = commandtypes[0].AsType();
 
             MethodInfo methodinfo = null;
+            ConstructorInfo constructorinfo = type.GetConstructors()[0];
+
             var args = ArgumentsParser.ParseArgumentsFromString(commandString, type, ref methodinfo);
             ParameterInfo[] paramsinfo = methodinfo.GetParameters();
 
-            Activator.CreateInstance(type, (paramsinfo.Length == 0) ? null : args );
+            var funcinstance = constructorinfo.Invoke()
+
+            methodinfo.Invoke(funcinstance, (paramsinfo.Length == 0) ? null : args);
+
+            //Activator.CreateInstance(type, (paramsinfo.Length == 0) ? null : args );
         }
     }
 }

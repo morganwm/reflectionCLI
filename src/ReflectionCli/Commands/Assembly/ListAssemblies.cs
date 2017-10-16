@@ -6,9 +6,18 @@ namespace ReflectionCli
 {
     public class ListAssemblies : ICommand
     {
-        public ListAssemblies()
+        private readonly ILoggingService _loggingService;
+        private readonly IAssemblyService _assemblyService;
+
+        public ListAssemblies(ILoggingService loggingService, IAssemblyService assemblyService)
         {
-            Program.ActiveAsm.ToList().ForEach(x => Console.WriteLine($"{x.Value.GetName().Name}: {x.Key}"));
+            _loggingService = loggingService;
+            _assemblyService = assemblyService;
+        }
+
+        public void Run()
+        {
+            _assemblyService.Get().ToList().ForEach(x => Console.WriteLine(x.GetName().Name));
         }
 
         public bool ExitVal()

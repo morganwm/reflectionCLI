@@ -7,15 +7,24 @@ namespace ReflectionCli
 {
     public class List : ICommand
     {
+        private readonly ILoggingService _loggingService;
+        private readonly IAssemblyService _assemblyService;
+
+        public List(ILoggingService loggingService, IAssemblyService assemblyService)
+        {
+            _loggingService = loggingService;
+            _assemblyService = assemblyService;
+        }
+
         public void Run()
         {
             Console.WriteLine("Valid Commands:");
 
-            Program.ActiveAsm.ToList().ForEach(t =>
+            _assemblyService.Get().ToList().ForEach(t =>
             {
-                Console.WriteLine($"{Environment.NewLine}   - {t.Value.FullName}: {t.Key}");
+                Console.WriteLine($"{Environment.NewLine}   - {t.FullName}");
 
-                t.Value.DefinedTypes.Where(u => (
+                t.DefinedTypes.Where(u => (
                     // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
                     u.ImplementedInterfaces.Where(v => v.Name == nameof(ICommand))
                         .ToList()
@@ -29,10 +38,10 @@ namespace ReflectionCli
         public void Run(string name)
         {
             Console.WriteLine($"Valid Commands for {name}:");
-            Program.ActiveAsm.ToList().ForEach(t =>
+            _assemblyService.Get().ToList().ForEach(t =>
             {
-                Console.WriteLine($"{Environment.NewLine}   - {t.Value.FullName}: {t.Key}");
-                t.Value.DefinedTypes.Where(u => (
+                Console.WriteLine($"{Environment.NewLine}   - {t.FullName}");
+                t.DefinedTypes.Where(u => (
                     // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
                     u.ImplementedInterfaces.Where(v => v.Name == nameof(ICommand))
                         .ToList()
