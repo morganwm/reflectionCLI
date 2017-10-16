@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <CodeAnalysisRuleSet>../../StyleCopRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-
   <ItemGroup>
     <Folder Include="Base\" />
     <Folder Include="Enums\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Roslyn.Analyzers" Version="1.0.3.4" />
   </ItemGroup>
 </Project>

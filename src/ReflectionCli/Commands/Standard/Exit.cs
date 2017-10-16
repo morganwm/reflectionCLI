@@ -5,9 +5,17 @@ namespace ReflectionCli
 {
     public class Exit : ICommand
     {
-        public void Run(IParam param)
+        private readonly ILoggingService _loggingService;
+
+        public Exit(ILoggingService loggingService) 
         {
-            Console.WriteLine("Shutting down....");
+            _loggingService = loggingService;
+        }
+
+        public void Run()
+        {
+            _loggingService.LogInfo("Shutting down....");
+
             Program.ShutDown = true;
         }
     }

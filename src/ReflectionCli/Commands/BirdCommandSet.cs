@@ -7,15 +7,6 @@ namespace ReflectionCli.extended
     public class BirdCommandSet
     {
         public class Parrot : ICommand
-        {
-			private readonly IAssemblyService _assemblyService;
-            private readonly IVariableService _variableService;
-
-            public Parrot(IAssemblyService assemblyService, IVariableService variableService)
-            {
-                _assemblyService = assemblyService;
-                _variableService = variableService;
-            }
 
             public void Run(List<string> input) 
             {

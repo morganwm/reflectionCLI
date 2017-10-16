@@ -17,7 +17,7 @@ namespace ReflectionCli
 
                 t.Value.DefinedTypes.Where(u => (
                     // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                    u.ImplementedInterfaces.Where(v => v.Name == "ICommand")
+                    u.ImplementedInterfaces.Where(v => v.Name == nameof(ICommand))
                         .ToList()
                         .Count != 0
                 ))
