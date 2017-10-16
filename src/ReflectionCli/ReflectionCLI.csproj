@@ -12,10 +12,12 @@
     <PackageReference Include="System.Runtime.Loader" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Commands\Base\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Remove="Commands\Base\**" />
+    <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="Commands\Base\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Commands\Base\**" />
+    <None Remove="Services\**" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ReflectionCli.Lib\ReflectionCli.Lib.csproj" />
