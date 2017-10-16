@@ -4,7 +4,6 @@ using System.Reflection;
 using ReflectionCli.Lib;
 
 using Microsoft.Extensions.DependencyInjection;
-using ReflectionCli.Lib.Enums;
 
 namespace ReflectionCli
 {
