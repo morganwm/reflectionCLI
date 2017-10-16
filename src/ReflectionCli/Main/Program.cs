@@ -18,13 +18,8 @@ namespace ReflectionCli
             var serviceProvider = new ServiceCollection()
                 .AddSingleton<IAssemblyService, AssemblyService>()
                 .AddSingleton<ILoggingService, LoggingService>()
-<<<<<<< HEAD
-                .AddScoped<IVariableService, VariableService>();
-            
-=======
                 .AddSingleton<IVariableService, VariableService>();
 
->>>>>>> origin/master
             ActiveAsm = new Dictionary<Guid, Assembly>
             {
                 { Guid.NewGuid(), Assembly.GetEntryAssembly() },
