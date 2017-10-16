@@ -19,7 +19,7 @@ namespace ReflectionCli
                 .AddScoped<IAssemblyService, AssemblyService>()
                 .AddSingleton<ILoggingService, LoggingService>()
                 .AddScoped<IVariableService, VariableService>();
-
+            
             ActiveAsm = new Dictionary<Guid, Assembly>
             {
                 { Guid.NewGuid(), Assembly.GetEntryAssembly() },
