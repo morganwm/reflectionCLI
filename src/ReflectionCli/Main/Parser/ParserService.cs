@@ -73,11 +73,6 @@ namespace ReflectionCli
                     });
             }
 
-            // var commandtypes = Assembly.GetEntryAssembly().DefinedTypes
-            //                     .Where(x => x.ImplementedInterfaces.Contains(typeof(ICommand)))
-            //                     .Where(x => (x.Name == commandName))
-            //                     .ToList();
-
             if (commandtypes.Count == 0) {
                 throw new Exception($"unable to find command {commandName}");
             }
@@ -91,17 +86,29 @@ namespace ReflectionCli
 
             Type type = commandtypes[0].AsType();
 
-            MethodInfo methodinfo = null;
-            ConstructorInfo constructorinfo = type.GetConstructors()[0];
+            var constructors = type.GetConstructors();
 
+            if (constructors.Count() > 1) {
+                throw new Exception($"Multiple constructors found for {commandName}");
+            }
+
+            var constructorparams = constructors[0].GetParameters()
+                .Select(t => Program.ServiceProvider.GetService(t.ParameterType));
+
+            object[] constructorparamsarray = new object[constructorparams.Count()];
+
+            for (int i = 0; i < constructorparams.Count(); i++)
+            {
+                constructorparamsarray[i] = constructorparams.ToArray()[i];
+            }
+
+            var functioninstance = (constructorparams.Count() == 0) ? Activator.CreateInstance(type) : Activator.CreateInstance(type, constructorparamsarray);
+
+            MethodInfo methodinfo = null;
             var args = ArgumentsParser.ParseArgumentsFromString(commandString, type, ref methodinfo);
             ParameterInfo[] paramsinfo = methodinfo.GetParameters();
 
-            var funcinstance = constructorinfo.Invoke()
-
-            methodinfo.Invoke(funcinstance, (paramsinfo.Length == 0) ? null : args);
-
-            //Activator.CreateInstance(type, (paramsinfo.Length == 0) ? null : args );
+            methodinfo.Invoke(functioninstance, args);
         }
     }
 }

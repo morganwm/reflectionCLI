@@ -24,7 +24,7 @@ namespace ReflectionCli.Lib
         public void LogError(Exception ex)
 		{
             if (Verbosity >= Verbosity.Error) {
-                Console.WriteLine($"[ERR] {ex.Message}");
+                Console.WriteLine($"[ERR] {ex.ToString()}");
             }
         }
 

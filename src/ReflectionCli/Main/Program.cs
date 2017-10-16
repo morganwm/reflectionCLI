@@ -11,38 +11,34 @@ namespace ReflectionCli
     {
         public static bool ShutDown { get; set; }
 
-        //public static Dictionary<Guid, Assembly> ActiveAsm;
+        public static IServiceProvider ServiceProvider;
 
         public static void Main(string[] args)
         {
-            var serviceProvider = new ServiceCollection()
+            var serviceCollection = new ServiceCollection()
                 .AddSingleton<IAssemblyService, AssemblyService>()
                 .AddSingleton<ILoggingService, LoggingService>()
                 .AddSingleton<IParserService, ParserService>()
                 .AddSingleton<IVariableService, VariableService>();
-            
 
-            var parseservice = serviceProvider.BuildServiceProvider()
-                .GetService<IParserService>();
+            ServiceProvider = serviceCollection.BuildServiceProvider();
 
-            var assemblyservice = serviceProvider.BuildServiceProvider()
-                .GetService<IAssemblyService>();
+            var parseservice = ServiceProvider.GetService<IParserService>();
+
+            var assemblyservice = ServiceProvider.GetService<IAssemblyService>();
+
+            var loggingservice = ServiceProvider.GetService<ILoggingService>();
 
             assemblyservice.Add(Assembly.GetEntryAssembly());
-
-            //ActiveAsm = new Dictionary<Guid, Assembly>
-            //{
-            //    { Guid.NewGuid(), Assembly.GetEntryAssembly() },
-            //};
 
             if (args.Length > 0) {
                 parseservice.Parse(string.Join(" ", args));
             } else {
-                TerminalMode(parseservice);
+                TerminalMode(parseservice, loggingservice);
             }
         }
 
-        public static void TerminalMode(IParserService parseservice)
+        public static void TerminalMode(IParserService parseservice, ILoggingService loggingservice)
         {
             Console.WriteLine("Enter command (help to display help):");
             Console.WriteLine();
@@ -54,7 +50,7 @@ namespace ReflectionCli
                     Console.WriteLine();
                 } catch (Exception ex) {
                     Console.WriteLine();
-                    Console.WriteLine("A fatal exception occured");
+                    loggingservice.LogError(ex);
                 }
             }
         }
