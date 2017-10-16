@@ -6,7 +6,7 @@ using ReflectionCli.Lib;
 
 namespace ReflectionCli
 {
-    public static class Parser
+    public class Parser
     {
         public static void Parse(string commandString)
         {
