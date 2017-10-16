@@ -14,10 +14,5 @@ namespace ReflectionCli
         {
             Console.WriteLine(Program.Verbose);
         }
-
-        public bool ExitVal()
-        {
-            return false;
-        }
     }
 }

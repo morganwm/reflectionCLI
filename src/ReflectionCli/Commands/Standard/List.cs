@@ -7,7 +7,7 @@ namespace ReflectionCli
 {
     public class List : ICommand
     {
-        public List()
+        public void Run()
         {
             Console.WriteLine("Valid Commands:");
 
@@ -26,7 +26,7 @@ namespace ReflectionCli
             });
         }
 
-        public List(string name)
+        public void Run(string name)
         {
             Console.WriteLine($"Valid Commands for {name}:");
             Program.ActiveAsm.ToList().ForEach(t =>
@@ -53,10 +53,6 @@ namespace ReflectionCli
                     });
                 });
             });
-        }
-        public bool ExitVal()
-        {
-            return false;
         }
     }
 }

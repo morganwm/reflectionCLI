@@ -2,9 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
+    <CodeAnalysisRuleSet>../../StyleCopRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
     <Folder Include="Base\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 </Project>
