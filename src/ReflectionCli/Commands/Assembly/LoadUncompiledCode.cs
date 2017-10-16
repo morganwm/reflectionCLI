@@ -14,9 +14,10 @@ namespace ReflectionCli
         private readonly ILoggingService _loggingService;
         private readonly IAssemblyService _assemblyService;
 
-        public LoadUncompiledCode(ILoggingService loggingService, IAssemblyService AssemblyService)
+        public LoadUncompiledCode(ILoggingService loggingService, IAssemblyService assemblyService)
         {
             _loggingService = loggingService;
+            _assemblyService = assemblyService;
         }
 
         public void Run(string path)
@@ -85,17 +86,17 @@ namespace ReflectionCli
                     throw new Exception("Multiple ICommands Found");
                 }
 
-                Type type = tempicommand[0];
+                //Type type = tempicommand[0];
 
-                var extvalinfo = type.GetMethods()
-                    .Where(t => t.Name == "ExitVal")
-                    .Where(t => t.ReturnType == typeof(bool))
-                    .ToList();
+                //var extvalinfo = type.GetMethods()
+                //    .Where(t => t.Name == "ExitVal")
+                //    .Where(t => t.ReturnType == typeof(bool))
+                //    .ToList();
 
-                if (extvalinfo.Count == 0)
-                {
-                    throw new Exception("ICommand does not return the correct exit value");
-                }
+                //if (extvalinfo.Count == 0)
+                //{
+                //    throw new Exception("ICommand does not return the correct exit value");
+                //}
 
                 //Program.ActiveAsm.Add(Guid.NewGuid(), tempAsm);
                 _assemblyService.Add(tempAsm);

@@ -6,7 +6,7 @@ namespace ReflectionCli.Lib
 {
     public class AssemblyService : IAssemblyService
     {
-        public static List<Assembly> Vars;
+        public static List<Assembly> Vars = new List<Assembly>();
 
         public List<Assembly> Get()
         {
