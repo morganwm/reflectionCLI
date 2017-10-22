@@ -16,6 +16,7 @@ namespace ReflectionCli.Lib
         {
             return Vars[name];
         }
+
         public void Set(Dictionary<string, dynamic> data)
         {
             Vars = data;
@@ -23,8 +24,7 @@ namespace ReflectionCli.Lib
 
         public void Set(string name, dynamic data)
         {
-            if (Vars.ContainsKey(name))
-            {
+            if (Vars.ContainsKey(name)) {
                 Vars[name] = data;
             } else {
                 Vars.Add(name, data);
