@@ -56,13 +56,10 @@ namespace ReflectionCli
                 var stream = new MemoryStream();
                 var emitResult = compilation.Emit(stream);
 
-                if (emitResult.Success)
-                {
+                if (emitResult.Success) {
                     stream.Seek(0, SeekOrigin.Begin);
                     tempAsm = AssemblyLoadContext.Default.LoadFromStream(stream);
-                }
-                else
-                {
+                } else {
                     Console.WriteLine();
                     emitResult.Diagnostics.Where(t => t.IsWarningAsError || t.Severity == DiagnosticSeverity.Error)
                         .ToList()
@@ -76,13 +73,11 @@ namespace ReflectionCli
                     .Where(t => t.Name == "ICommand")
                     .ToList();
 
-                if (tempicommand.Count == 0)
-                {
+                if (tempicommand.Count == 0) {
                     throw new Exception("Unable to find ICommand");
                 }
 
-                if (tempicommand.Count > 1)
-                {
+                if (tempicommand.Count > 1) {
                     throw new Exception("Multiple ICommands Found");
                 }
 

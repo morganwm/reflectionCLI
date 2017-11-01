@@ -42,7 +42,7 @@ namespace ReflectionCli
                     commandName = commandString.Split(' ')
                         .ToList()[1];
 
-                    _assemblyservice.Get().Where(t => t.GetName().Name == asmName)
+                    _assemblyservice.Get().Where(t => t.GetName().Name.Equals(asmName, StringComparison.CurrentCultureIgnoreCase))
                         .ToList()
                         .ForEach(u =>
                         {
