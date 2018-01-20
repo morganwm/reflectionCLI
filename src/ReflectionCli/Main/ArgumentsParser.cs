@@ -35,6 +35,7 @@ namespace ReflectionCli
                 .Where(x => !string.IsNullOrEmpty(x.Value));
 
             var paramNames = atoms.Where(t => t.Value[0] == '-');
+            var paramNamesTrimmed = paramNames.Select(t => t.Value.Remove(0, 1));
 
             if (paramNames == null) {
                 throw new Exception("No Parameter Names were found. Please use the convention: -ParameterName Value");
@@ -75,13 +76,28 @@ namespace ReflectionCli
             }
 
             // find constructor whos vartiable names match those given
-            var matchingmethods = type.GetMethods()
-                .Where(t => t.Name == "Run")
+            var methods = type.GetMethods().Where(t => t.Name == "Run");
+            var methodParams = methods.ToDictionary(t => t, t => t.GetParameters().Select(u => u.Name));
+
+            /*
                 .Where(t => t.GetParameters()
                     .Select(u => u.Name)
                     .Intersect(paramPackages.Select(u => u.Key.Value.Remove(0, 1))).Count() == paramPackages.Count()
                         && paramPackages.Select(u => u.Key.Value.Remove(0, 1))
                             .Intersect(t.GetParameters().Select(u => u.Name)).Count() == t.GetParameters().Count());
+
+    */
+
+            var matchingmethods = new List<MethodInfo>();
+            foreach (var methodToSelect in methods) {
+                bool isGood = paramNamesTrimmed.Count() <= methodToSelect.GetParameters().Count();
+                foreach (var paramToCheck in methodToSelect.GetParameters()) {
+                    isGood = isGood && (paramNamesTrimmed.Contains(paramToCheck.Name) || paramToCheck.HasDefaultValue);
+                }
+                if (isGood) {
+                    matchingmethods.Add(methodToSelect);
+                }
+            }
 
             if (matchingmethods == null) {
                 throw new Exception($"No Constructors for {type.Name} have matching input names to those Provided.");
@@ -91,11 +107,18 @@ namespace ReflectionCli
                 throw new Exception($"Multiple Constructors for {type.Name} have matching input names, this is an issue with the way that {type.Name} was written.");
             }
 
-            MethodInfo chosenmethod = matchingmethods.ToList()[0];
+            MethodInfo chosenmethod = matchingmethods[0];
             for (int i = 0; i < chosenmethod.GetParameters().Count(); i++) {
-                Type outType = chosenmethod.GetParameters().ToList()[i].ParameterType;
+                ParameterInfo outTypeInfo = chosenmethod.GetParameters().ToList()[i];
+
+                if (outTypeInfo.HasDefaultValue && !paramNamesTrimmed.Contains(outTypeInfo.Name)) {
+                    outval.Add(null);
+                    continue;
+                }
+
+                Type outType = outTypeInfo.ParameterType;
                 var tempObject = paramPackages
-                    .Where(t => t.Key.Value.Remove(0, 1) == chosenmethod.GetParameters().ToList()[i].Name)
+                    .Where(t => t.Key.Value.Remove(0, 1) == outTypeInfo.Name)
                     .Select(y => y.Value)
                     .ToList()[0];
 

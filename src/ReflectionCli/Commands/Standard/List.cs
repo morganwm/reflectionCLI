@@ -40,7 +40,7 @@ namespace ReflectionCli
             Console.WriteLine($"Valid Commands for {name}:");
             _assemblyService.Get().ToList().ForEach(t =>
             {
-                Console.WriteLine($"{Environment.NewLine}   - {t.FullName}");
+                Console.WriteLine($"{Environment.NewLine}-{t.FullName}");
                 t.DefinedTypes.Where(u => (
                     // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
                     u.ImplementedInterfaces.Where(v => v.Name == nameof(ICommand))
@@ -57,11 +57,12 @@ namespace ReflectionCli
                     .ToList()
                     .ForEach(v =>
                     {
-                        Console.WriteLine($"{Environment.NewLine} +       - {name}");
+                        Console.WriteLine($"{Environment.NewLine} + {name}");
 
                         v.GetParameters().ToList().ForEach(w =>
                         {
-                            Console.WriteLine($"        - {w.Name} ({w.ParameterType.FullName})");
+                            string optional = w.HasDefaultValue ? "(Optional)" : string.Empty;
+                            Console.WriteLine($"        - {optional} {w.Name} ({w.ParameterType.FullName})");
                         });
                     });
                 });
