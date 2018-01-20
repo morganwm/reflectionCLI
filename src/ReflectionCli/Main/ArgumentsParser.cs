@@ -99,7 +99,7 @@ namespace ReflectionCli
                 }
             }
 
-            if (matchingmethods == null) {
+            if (matchingmethods.Count() == 0) {
                 throw new Exception($"No Constructors for {type.Name} have matching input names to those Provided.");
             }
 
