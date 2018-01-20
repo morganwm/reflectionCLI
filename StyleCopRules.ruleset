@@ -36,4 +36,8 @@
     <Rule Id="SA1649" Action="None" />
     <Rule Id="SA1652" Action="None" />
   </Rules>
+  <Rules AnalyzerId="Roslyn.Analyzers" RuleNamespace="Roslyn.Analyzers">
+    <Rule Id="ASYNC0001" Action="None" />
+    <Rule Id="ASYNC0002" Action="None" />
+  </Rules>
 </RuleSet>

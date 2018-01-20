@@ -32,7 +32,7 @@ namespace ReflectionCli
                 throw new Exception($"Cannot remove assembly {Assembly.GetEntryAssembly().GetName().Name} as this is the Entry Assembly");
             }
 
-            //Program.ActiveAsm.Remove(tempAsmEntries.ToList()[0].Key);
+            // Program.ActiveAsm.Remove(tempAsmEntries.ToList()[0].Key);
             var asmlist = _assemblyService.Get();
             asmlist.RemoveAll(t => t == tempAsmEntries.ToList()[0]);
             _assemblyService.Set(asmlist);
