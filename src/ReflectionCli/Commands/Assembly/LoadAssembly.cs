@@ -36,19 +36,6 @@ namespace ReflectionCli
                 throw new Exception("Multiple ICommands Found");
             }
 
-            //Type type = tempicommand[0];
-
-            //var extvalinfo = type.GetMethods().ToList()
-            //    .Where(x => x.Name == "ExitVal")
-            //    .Where(x => x.ReturnType == typeof(bool))
-            //    .ToList();
-
-            //if (extvalinfo.Count == 0)
-            //{
-            //    throw new Exception("ICommand did not return the correct exit value");
-            //}
-
-            //Program.ActiveAsm.Add(Guid.NewGuid(), tempAsm);
             _assemblyService.Add(tempAsm);
         }
     }
