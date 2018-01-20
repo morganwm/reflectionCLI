@@ -4,13 +4,24 @@
    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
    "version": "0.2.0",
    "configurations": [
+       {
+           "name": ".NET Core Launch (console) external",
+           "type": "coreclr",
+           "request": "launch",
+           "preLaunchTask": "build",
+           "program": "${workspaceRoot}/src/ReflectionCli/bin/Debug/netcoreapp2.0/ReflectionCLI.dll",
+           "args": [],
+           "cwd": "${workspaceRoot}/src/ReflectionCli",
+           "stopAtEntry": false,
+           "console": "externalTerminal"
+       },
         {
             "name": ".NET Core Launch (console)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceRoot}/src/ReflectionCli/bin/Debug/netcoreapp1.1/ReflectionCLI.dll",
+            "program": "${workspaceRoot}/src/ReflectionCli/bin/Debug/netcoreapp2.0/ReflectionCLI.dll",
             "args": [],
             "cwd": "${workspaceRoot}/src/ReflectionCli",
             // For more information about the 'console' field, see https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md#console-terminal-window
