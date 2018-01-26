@@ -15,7 +15,7 @@ namespace ReflectionCli.extended
     {
         public class RunScript : ICommand
         {
-            public async void Run(string script, List<string> references = null, List<string> imports = null, bool exactpaths = false)
+            public async void Run(string script, List<string> references = null, List<string> imports = null, bool exactRefPaths = false)
             {
                 Console.WriteLine();
                 Console.WriteLine("Running...");
