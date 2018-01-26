@@ -40,16 +40,15 @@ namespace ReflectionCli
 
         public static void TerminalMode(IParserService parseservice, ILoggingService loggingservice)
         {
-            Console.WriteLine("Enter command (help to display help):");
-            Console.WriteLine();
+            loggingservice.Log("Enter command (help to display help):" + Environment.NewLine);
 
             while (!ShutDown) {
                 try {
-                    Console.WriteLine();
+                    loggingservice.Log();
                     parseservice.Parse(Console.ReadLine());
-                    Console.WriteLine();
+                    loggingservice.Log();
                 } catch (Exception ex) {
-                    Console.WriteLine();
+                    loggingservice.Log();
                     loggingservice.LogError(ex);
                 }
             }
