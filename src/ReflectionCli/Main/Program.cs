@@ -45,13 +45,13 @@ namespace ReflectionCli
             while (!ShutDown) {
                 try {
                     loggingservice.Log();
-                    parseservice.Parse(Console.ReadLine());
+                    parseservice.Parse(loggingservice.Internal(Console.ReadLine()));
                     loggingservice.Log();
                 } catch (Exception ex) {
                     loggingservice.Log();
-                    _loggingservice.LogInfo(ex);
-                    _loggingservice.LogError(ex);
-                    _loggingservice.LogDebug(ex);
+                    loggingservice.LogInfo(ex);
+                    loggingservice.LogError(ex);
+                    loggingservice.LogDebug(ex);
                 }
             }
         }

@@ -15,6 +15,7 @@ namespace ReflectionCli.Lib
 		void LogWarning(string warning);
 		void LogError(string error);
         void LogError(Exception ex);
+        string Internal(string info);
 
         Verbosity GetVerbosity();
         void SetVerbosity(Verbosity verbosity);

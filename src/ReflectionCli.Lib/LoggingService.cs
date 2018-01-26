@@ -9,6 +9,7 @@ namespace ReflectionCli.Lib
         private readonly ILoggingService _loggingService;
 
         private string _textToBeWrittenInConsole = string.Empty;
+        private string _textReadInFromConsole = string.Empty;
 
         public Verbosity GetVerbosity()
         {
@@ -89,6 +90,12 @@ namespace ReflectionCli.Lib
                 _textToBeWrittenInConsole = $"[WRN] {warning}";
                 Console.WriteLine($"[WRN] {warning}");
             }
+        }
+
+        public string Internal(string info)
+        {
+            _textReadInFromConsole = info;
+            return info;
         }
 
         public void SetVerbosity(Verbosity verbosity)
