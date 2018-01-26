@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using ReflectionCli.Lib;
-using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.Scripting;
-using Microsoft.CodeAnalysis;
+using System.IO;
 using System.Reflection;
 using System.Runtime.Loader;
-using System.IO;
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
+using ReflectionCli.Lib;
 
 namespace ReflectionCli.extended
 {
@@ -15,7 +15,7 @@ namespace ReflectionCli.extended
     {
         public class RunScript : ICommand
         {
-            public async void Run(string script, List<string> references = null, List<string> imports = null)
+            public async void Run(string script, List<string> references = null, List<string> imports = null, bool exactpaths = false)
             {
                 Console.WriteLine();
                 Console.WriteLine("Running...");
@@ -26,7 +26,13 @@ namespace ReflectionCli.extended
                 if (references != null) {
                     foreach (var refernceString in references) {
                         try {
-                            var tempRef = MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName(refernceString)).Location);
+                            PortableExecutableReference tempRef;
+                            if (exactpaths) {
+                                tempRef = MetadataReference.CreateFromFile(refernceString);
+                            } else {
+                                tempRef = MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName(refernceString)).Location);
+                            }
+                            
                             Console.WriteLine($"Loaded {refernceString} from {tempRef.FilePath}");
                             metaReferences.Add(tempRef);
 
