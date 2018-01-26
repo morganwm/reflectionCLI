@@ -5,7 +5,7 @@ namespace ReflectionCli.Lib
 {
     public class LoggingService : ILoggingService
     {
-        public Verbosity Verbosity = Verbosity.Info;
+        public Verbosity Verbosity = Verbosity.Debug;
         private readonly ILoggingService _loggingService;
 
         private string _textToBeWrittenInConsole = string.Empty;
