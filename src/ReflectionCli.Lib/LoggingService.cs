@@ -38,11 +38,38 @@ namespace ReflectionCli.Lib
             }
         }
 
+        public void Log(string info)
+        {
+            _textToBeWrittenInConsole = info;
+            Console.WriteLine(info);
+        }
+
+        public void Log(object info)
+        {
+            _textToBeWrittenInConsole = info.ToString();
+            Console.WriteLine(info);
+        }
+
+        public void Log()
+        {
+            _textToBeWrittenInConsole = Environment.NewLine;
+            Console.WriteLine(Environment.NewLine);
+        }
+
         public void LogInfo(string info)
         {
             if (Verbosity <= Verbosity.Info) {
                 _textToBeWrittenInConsole = $"[INF] {info}";
                 Console.WriteLine($"[INF] {info}");
+            }
+        }
+
+        public void LogInfo(Exception ex)
+        {
+            if (Verbosity <= Verbosity.Info)
+            {
+                _textToBeWrittenInConsole = $"[INF] {ex.Message}";
+                Console.WriteLine($"[INF] {ex.Message}");
             }
         }
 

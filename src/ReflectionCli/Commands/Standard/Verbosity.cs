@@ -17,8 +17,8 @@ namespace ReflectionCli
 
         public void Run()
         {
-            Console.WriteLine();
-            Console.WriteLine(_loggingService.GetVerbosity().ToString());
+            _loggingService.Log();
+            _loggingService.Log(_loggingService.GetVerbosity().ToString());
         }
 
         public void Run(string verbosity)
@@ -26,18 +26,18 @@ namespace ReflectionCli
             Lib.Enums.Verbosity setting;
             if (!Enum.TryParse<Lib.Enums.Verbosity>(verbosity, true, out setting))
             {
-                Console.WriteLine("Failed To Parse Input value into verbosity setting. The Settings are:");
+                _loggingService.Log("Failed To Parse Input value into verbosity setting. The Settings are:");
                 foreach (var val in Enum.GetValues(typeof(Lib.Enums.Verbosity)))
                 {
-                    Console.WriteLine($" {val.ToString()}");
+                    _loggingService.Log($" {val.ToString()}");
                 }
                 return;
             }
 
             _loggingService.SetVerbosity(setting);
 
-            Console.WriteLine();
-            Console.WriteLine($"Verbosity set to {_loggingService.GetVerbosity().ToString()}");
+            _loggingService.Log();
+            _loggingService.Log($"Verbosity set to {_loggingService.GetVerbosity().ToString()}");
         }
     }
 }

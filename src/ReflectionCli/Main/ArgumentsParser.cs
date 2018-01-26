@@ -79,15 +79,6 @@ namespace ReflectionCli
             var methods = type.GetMethods().Where(t => t.Name == "Run");
             var methodParams = methods.ToDictionary(t => t, t => t.GetParameters().Select(u => u.Name));
 
-            /*
-                .Where(t => t.GetParameters()
-                    .Select(u => u.Name)
-                    .Intersect(paramPackages.Select(u => u.Key.Value.Remove(0, 1))).Count() == paramPackages.Count()
-                        && paramPackages.Select(u => u.Key.Value.Remove(0, 1))
-                            .Intersect(t.GetParameters().Select(u => u.Name)).Count() == t.GetParameters().Count());
-
-    */
-
             var matchingmethods = new List<MethodInfo>();
             foreach (var methodToSelect in methods) {
                 bool isGood = paramNamesTrimmed.Count() <= methodToSelect.GetParameters().Count();

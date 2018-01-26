@@ -62,7 +62,7 @@ namespace ReflectionCli
                     stream.Seek(0, SeekOrigin.Begin);
                     tempAsm = AssemblyLoadContext.Default.LoadFromStream(stream);
                 } else {
-                    Console.WriteLine();
+                    _loggingService.Log();
                     emitResult.Diagnostics.Where(t => t.IsWarningAsError || t.Severity == DiagnosticSeverity.Error)
                         .ToList()
                         .ForEach(x => Console.Error.WriteLine($"{x.Id} {x.Location.GetLineSpan().ToString()}: {x.GetMessage()}{Environment.NewLine}"));
@@ -83,23 +83,11 @@ namespace ReflectionCli
                     throw new Exception("Multiple ICommands Found");
                 }
 
-                // Type type = tempicommand[0];
-
-                // var extvalinfo = type.GetMethods()
-                //    .Where(t => t.Name == "ExitVal")
-                //    .Where(t => t.ReturnType == typeof(bool))
-                //    .ToList();
-
-                // if (extvalinfo.Count == 0)
-                // {
-                //    throw new Exception("ICommand does not return the correct exit value");
-                // }
-
-                // Program.ActiveAsm.Add(Guid.NewGuid(), tempAsm);
                 _assemblyService.Add(tempAsm);
             }
             catch (Exception ex)
             {
+                _loggingService.LogInfo(ex);
                 _loggingService.LogError(ex);
             }
         }
