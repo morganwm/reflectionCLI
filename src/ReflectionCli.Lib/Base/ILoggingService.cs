@@ -1,4 +1,4 @@
-﻿using System;Exc
+﻿using System;
 using ReflectionCli.Lib.Enums;
 
 namespace ReflectionCli.Lib
@@ -11,6 +11,7 @@ namespace ReflectionCli.Lib
         void LogInfo(string info);
         void LogInfo(Exception ex);
         void LogDebug(string debug);
+        void LogDebug(Exception ex);
 		void LogWarning(string warning);
 		void LogError(string error);
         void LogError(Exception ex);

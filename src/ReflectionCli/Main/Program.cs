@@ -49,7 +49,9 @@ namespace ReflectionCli
                     loggingservice.Log();
                 } catch (Exception ex) {
                     loggingservice.Log();
-                    loggingservice.LogError(ex);
+                    _loggingservice.LogInfo(ex);
+                    _loggingservice.LogError(ex);
+                    _loggingservice.LogDebug(ex);
                 }
             }
         }

@@ -6,6 +6,7 @@ namespace ReflectionCli.Lib
     public class LoggingService : ILoggingService
     {
         public Verbosity Verbosity = Verbosity.Info;
+        private readonly ILoggingService _loggingService;
 
         private string _textToBeWrittenInConsole = string.Empty;
 
@@ -22,6 +23,15 @@ namespace ReflectionCli.Lib
             }
         }
 
+        public void LogDebug(Exception ex)
+        {
+            if (Verbosity <= Verbosity.Debug)
+            {
+                _textToBeWrittenInConsole = $"[DBG] {ex.ToString()}";
+                Console.WriteLine($"[DBG] {ex.ToString()}");
+            }
+        }
+
         public void LogError(string error)
         {
             if (Verbosity <= Verbosity.Error) {
@@ -33,8 +43,8 @@ namespace ReflectionCli.Lib
         public void LogError(Exception ex)
         {
             if (Verbosity <= Verbosity.Error) {
-                _textToBeWrittenInConsole = $"[ERR] {ex.ToString()}";
-                Console.WriteLine($"[ERR] {ex.ToString()}");
+                _textToBeWrittenInConsole = $"[ERR] {ex.Message}";
+                Console.WriteLine($"[ERR] {ex.Message}");
             }
         }
 
@@ -68,8 +78,8 @@ namespace ReflectionCli.Lib
         {
             if (Verbosity <= Verbosity.Info)
             {
-                _textToBeWrittenInConsole = $"[INF] {ex.Message}";
-                Console.WriteLine($"[INF] {ex.Message}");
+                _textToBeWrittenInConsole = $"[INF] {ex.GetType().ToString()}";
+                Console.WriteLine($"[INF] {ex.GetType().ToString()}");
             }
         }
 
