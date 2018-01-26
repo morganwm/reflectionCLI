@@ -27,7 +27,7 @@ namespace ReflectionCli.extended
                     foreach (var refernceString in references) {
                         try {
                             PortableExecutableReference tempRef;
-                            if (exactpaths) {
+                            if (exactRefPaths) {
                                 tempRef = MetadataReference.CreateFromFile(refernceString);
                             } else {
                                 tempRef = MetadataReference.CreateFromFile(Assembly.Load(new AssemblyName(refernceString)).Location);
