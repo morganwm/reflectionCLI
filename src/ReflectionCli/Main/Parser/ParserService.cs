@@ -104,12 +104,7 @@ namespace ReflectionCli
                 var constructorparams = constructors[0].GetParameters()
                     .Select(t => Program.ServiceProvider.GetService(t.ParameterType));
 
-                object[] constructorparamsarray = new object[constructorparams.Count()];
-
-                for (int i = 0; i < constructorparams.Count(); i++)
-                {
-                    constructorparamsarray[i] = constructorparams.ToArray()[i];
-                }
+                object[] constructorparamsarray = constructorparams.ToArray();
 
                 bool nullconstructor = constructorparams.Count() == 0;
                 nullconstructor = nullconstructor || (constructorparams.Where(t => t != null).Count() == 0);
@@ -124,9 +119,7 @@ namespace ReflectionCli
             }
             catch (Exception ex)
             {
-                _loggingservice.LogInfo(ex);
-                _loggingservice.LogError(ex);
-                _loggingservice.LogDebug(ex);
+                _loggingservice.LogException(ex);
             }
         }
     }

@@ -40,9 +40,7 @@ namespace ReflectionCli.extended
                             metaReferences.Add(tempRef);
                         } catch (Exception ex) {
                             _loggingService.LogInfo(Environment.NewLine + $"Exception Occured trying to load {refernceString}" + Environment.NewLine);
-                            _loggingService.LogInfo(ex);
-                            _loggingService.LogError(ex);
-                            _loggingService.LogDebug(ex);
+                            _loggingService.LogException(ex);
                             return;
                         }
                     }
@@ -55,9 +53,7 @@ namespace ReflectionCli.extended
                         options = ScriptOptions.Default.AddImports(imports);
                     } catch (Exception ex) {
                         _loggingService.LogInfo(Environment.NewLine + "Exception Occured trying to import" + Environment.NewLine);
-                        _loggingService.LogInfo(ex);
-                        _loggingService.LogError(ex);
-                        _loggingService.LogDebug(ex);
+                        _loggingService.LogException(ex);
                         return;
                     }
                 }

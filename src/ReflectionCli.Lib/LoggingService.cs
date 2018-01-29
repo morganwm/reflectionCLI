@@ -18,34 +18,17 @@ namespace ReflectionCli.Lib
 
         public void LogDebug(string debug)
         {
-            if (Verbosity <= Verbosity.Debug) {
+            if (Verbosity >= Verbosity.Debug) {
                 _textToBeWrittenInConsole = $"[DBG] {debug}";
                 Console.WriteLine($"[DBG] {debug}");
             }
         }
 
-        public void LogDebug(Exception ex)
-        {
-            if (Verbosity <= Verbosity.Debug)
-            {
-                _textToBeWrittenInConsole = $"[DBG] {ex.ToString()}";
-                Console.WriteLine($"[DBG] {ex.ToString()}");
-            }
-        }
-
         public void LogError(string error)
         {
-            if (Verbosity <= Verbosity.Error) {
+            if (Verbosity >= Verbosity.Error) {
                 _textToBeWrittenInConsole = $"[ERR] {error}";
                 Console.WriteLine($"[ERR] {error}");
-            }
-        }
-
-        public void LogError(Exception ex)
-        {
-            if (Verbosity <= Verbosity.Error) {
-                _textToBeWrittenInConsole = $"[ERR] {ex.Message}";
-                Console.WriteLine($"[ERR] {ex.Message}");
             }
         }
 
@@ -69,26 +52,34 @@ namespace ReflectionCli.Lib
 
         public void LogInfo(string info)
         {
-            if (Verbosity <= Verbosity.Info) {
+            if (Verbosity >= Verbosity.Info) {
                 _textToBeWrittenInConsole = $"[INF] {info}";
                 Console.WriteLine($"[INF] {info}");
             }
         }
 
-        public void LogInfo(Exception ex)
+        public void LogWarning(string warning)
         {
-            if (Verbosity <= Verbosity.Info)
-            {
-                _textToBeWrittenInConsole = $"[INF] {ex.GetType().ToString()}";
-                Console.WriteLine($"[INF] {ex.GetType().ToString()}");
+            if (Verbosity >= Verbosity.Warning) {
+                _textToBeWrittenInConsole = $"[WRN] {warning}";
+                Console.WriteLine($"[WRN] {warning}");
             }
         }
 
-        public void LogWarning(string warning)
+        public void LogException(Exception ex)
         {
-            if (Verbosity <= Verbosity.Warning) {
-                _textToBeWrittenInConsole = $"[WRN] {warning}";
-                Console.WriteLine($"[WRN] {warning}");
+            if (Verbosity >= Verbosity.Info)
+            {
+                Console.WriteLine();
+                _textToBeWrittenInConsole = $"[INF] {ex.Message}";
+                Console.WriteLine($"[INF] {ex.Message}");
+            }
+
+            if (Verbosity >= Verbosity.Debug)
+            {
+                Console.WriteLine();
+                _textToBeWrittenInConsole = $"[DBG] {ex.ToString()}";
+                Console.WriteLine($"[DBG] {ex.ToString()}");
             }
         }
 

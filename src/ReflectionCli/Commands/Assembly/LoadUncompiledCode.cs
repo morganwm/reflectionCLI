@@ -87,8 +87,7 @@ namespace ReflectionCli
             }
             catch (Exception ex)
             {
-                _loggingService.LogInfo(ex);
-                _loggingService.LogError(ex);
+                _loggingService.LogException(ex);
             }
         }
 

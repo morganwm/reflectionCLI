@@ -9,12 +9,10 @@ namespace ReflectionCli.Lib
         void Log(string info);
         void Log(object info);
         void LogInfo(string info);
-        void LogInfo(Exception ex);
         void LogDebug(string debug);
-        void LogDebug(Exception ex);
 		void LogWarning(string warning);
 		void LogError(string error);
-        void LogError(Exception ex);
+        void LogException(Exception ex);
         string Internal(string info);
 
         Verbosity GetVerbosity();
