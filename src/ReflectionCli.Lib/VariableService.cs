@@ -5,7 +5,7 @@ namespace ReflectionCli.Lib
 {
     public class VariableService : IVariableService
     {
-        public static Dictionary<string, dynamic> Vars;
+        public static Dictionary<string, dynamic> Vars = new Dictionary<string, dynamic>();
 
         public Dictionary<string, dynamic> Get()
         {
