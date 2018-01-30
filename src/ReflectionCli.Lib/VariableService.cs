@@ -30,5 +30,13 @@ namespace ReflectionCli.Lib
                 Vars.Add(name, data);
             }
         }
+
+        public void Remove(string name)
+        {
+            if(Vars.ContainsKey(name))
+            {
+                Vars.Remove(name);
+            }
+        }
     }
 }
