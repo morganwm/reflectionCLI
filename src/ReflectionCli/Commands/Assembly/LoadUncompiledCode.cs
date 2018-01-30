@@ -65,7 +65,7 @@ namespace ReflectionCli
                     _loggingService.Log();
                     emitResult.Diagnostics.Where(t => t.IsWarningAsError || t.Severity == DiagnosticSeverity.Error)
                         .ToList()
-                        .ForEach(x => Console.Error.WriteLine($"{x.Id} {x.Location.GetLineSpan().ToString()}: {x.GetMessage()}{Environment.NewLine}"));
+                        .ForEach(x => _loggingService.Log($"{x.Id} {x.Location.GetLineSpan().ToString()}: {x.GetMessage()}{Environment.NewLine}"));
 
                     throw new Exception($"{Environment.NewLine} Assembly could not be created {Environment.NewLine}");
                 }
@@ -89,11 +89,6 @@ namespace ReflectionCli
             {
                 _loggingService.LogException(ex);
             }
-        }
-
-        public bool ExitVal()
-        {
-            return false;
         }
     }
 }

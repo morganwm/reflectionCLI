@@ -54,15 +54,13 @@ namespace ReflectionCli
             for (int i = 0; i < paramNames.Count(); i++) {
                 var objects = new List<string>();
                 if (i == paramNames.Count() - 1) {
-                    atoms.ToList()
-                        .Where(t => t.Index > paramNames.ToList()[i].Index)
-                        .ToList()
-                        .ForEach(t => objects.Add(t.Value));
+                    objects = atoms.Where(t => t.Index > paramNames.ToList()[i].Index)
+                        .Select(t => t.Value)
+                        .ToList();
                 } else {
-                    atoms.ToList()
-                        .Where(t => (t.Index > paramNames.ToList()[i].Index) && (t.Index < paramNames.ToList()[i + 1].Index))
-                        .ToList()
-                        .ForEach(t => objects.Add(t.Value));
+                    objects = atoms.Where(t => (t.Index > paramNames.ToList()[i].Index) && (t.Index < paramNames.ToList()[i + 1].Index))
+                        .Select(t => t.Value)
+                        .ToList();
                 }
 
                 // strip quotes off of things that start and end with them

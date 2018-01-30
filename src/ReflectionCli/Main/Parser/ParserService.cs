@@ -35,48 +35,29 @@ namespace ReflectionCli
                 if (commandString[0] == '@')
                 {
                     // search specific assembly
-                    asmName = commandString.Split(' ')
-                        .ToList()[0]
-                        .Remove(0, 1);
+                    asmName = commandString.Split(' ')[0].Remove(0, 1);
 
-                    commandName = commandString.Split(' ')
-                        .ToList()[1];
+                    commandName = commandString.Split(' ')[1];
 
-                    _assemblyservice.Get().Where(t => t.GetName().Name.Equals(asmName, StringComparison.CurrentCultureIgnoreCase))
-                        .ToList()
-                        .ForEach(u =>
-                        {
-                            u.DefinedTypes.Where(v => (
-                                // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                                v.ImplementedInterfaces.Where(w => w.Name == nameof(ICommand))
-                                    .ToList()
-                                    .Count != 0
-                            ))
-                            .Where(v => v.Name.Equals(commandName, StringComparison.CurrentCultureIgnoreCase))
-                            .ToList()
-                            .ForEach(v => commandtypes.Add(v));
-                        });
+                    commandtypes = _assemblyservice.Get()
+                        .Where(t => t.GetName().Name.Equals(asmName, StringComparison.CurrentCultureIgnoreCase))
+                        .SelectMany(t => 
+                            t.DefinedTypes
+                                .Where(u => u.ImplementedInterfaces.Select(v => v.Name).Contains(nameof(ICommand)))
+                                .Where(u => u.Name.Equals(commandName, StringComparison.CurrentCultureIgnoreCase)))
+                        .ToList();
                 }
                 else
                 {
                     // search for commands in all active assemblies
-                    commandName = commandString.Split(' ')
-                        .ToList()[0];
+                    commandName = commandString.Split(' ')[0];
 
-                    _assemblyservice.Get()
-                        .ToList()
-                        .ForEach(t =>
-                        {
-                            t.DefinedTypes.Where(u => (
-                                // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
-                                u.ImplementedInterfaces.Where(v => v.Name == nameof(ICommand))
-                                    .ToList()
-                                    .Count != 0
-                            ))
-                            .Where(u => u.Name.Equals(commandName, StringComparison.CurrentCultureIgnoreCase))
-                            .ToList()
-                            .ForEach(u => commandtypes.Add(u));
-                        });
+                    commandtypes = _assemblyservice.Get()
+                        .SelectMany(t =>
+                            t.DefinedTypes
+                                .Where(u => u.ImplementedInterfaces.Select(v => v.Name).Contains(nameof(ICommand)))
+                                .Where(u => u.Name.Equals(commandName, StringComparison.CurrentCultureIgnoreCase)))
+                        .ToList();
                 }
 
                 if (commandtypes.Count == 0)

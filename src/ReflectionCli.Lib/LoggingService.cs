@@ -81,6 +81,13 @@ namespace ReflectionCli.Lib
                 _textToBeWrittenInConsole = $"[DBG] {ex.ToString()}";
                 Console.WriteLine($"[DBG] {ex.ToString()}");
             }
+
+            if (ex.InnerException !=  null)
+            {
+                Console.WriteLine();
+                Console.WriteLine("Inner:");
+                LogException(ex.InnerException);
+            }
         }
 
         public string Internal(string info)
