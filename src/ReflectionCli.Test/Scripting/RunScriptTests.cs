@@ -8,12 +8,12 @@ using static ReflectionCli.extended.ScriptingCommandSet;
 
 namespace ReflectionCli.Test.Services
 {
-    public class RunScriptsTest
+    public class RunScriptTests
     {
         private readonly FakeLoggingService _loggingService;
         private readonly RunScript _runScript;
 
-        public RunScriptsTest()
+        public RunScriptTests()
         {
             _loggingService = new FakeLoggingService();
             _runScript = new RunScript(_loggingService);
