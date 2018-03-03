@@ -18,7 +18,7 @@ namespace ReflectionCli
         public void Run()
         {
             _loggingService.Log();
-            _loggingService.Log(_loggingService.GetVerbosity().ToString());
+            _loggingService.LogResult(_loggingService.GetVerbosity().ToString());
         }
 
         public void Run(string verbosity)

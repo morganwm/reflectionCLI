@@ -14,7 +14,7 @@ namespace ReflectionCli
 
         public void Run()
         {
-            _loggingService.Log("Shutting down....");
+            _loggingService.LogResult("Shutting down....");
 
             Program.ShutDown = true;
         }

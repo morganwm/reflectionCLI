@@ -25,14 +25,14 @@ namespace ReflectionCli.Test.HelperServices
         public void LogDebug(string debug)
         {
             if (Verbosity >= Lib.Enums.Verbosity.Debug) {
-                Log($"[DBG] {debug}");
+                Log($"[DBG] {debug}", RecordType.Error);
             }
         }
 
         public void LogError(string error)
         {
             if (Verbosity >= Lib.Enums.Verbosity.Error) {
-                Log($"[ERR] {error}");
+                Log($"[ERR] {error}", RecordType.Error);
             }
         }
 
@@ -45,6 +45,18 @@ namespace ReflectionCli.Test.HelperServices
         {
             Log(info.ToString());
         }
+        public void Log(string info, RecordType recordType)
+        {
+            Records.Add(new Record(info, recordType));
+            Console.WriteLine(info);
+        }
+
+        public void Log(object info, RecordType recordType)
+        {
+            Records.Add(new Record(info.ToString(), recordType));
+            Console.WriteLine(info);
+        }
+
         public void LogResult(string info)
         {
             Records.Add(new Record(info, RecordType.Result));
@@ -79,12 +91,12 @@ namespace ReflectionCli.Test.HelperServices
         {
             if (Verbosity >= Lib.Enums.Verbosity.Info) {
                 Log();
-                Log($"[INF] {ex.Message}");
+                Log($"[INF] {ex.Message}", RecordType.Error);
             }
 
             if (Verbosity >= Lib.Enums.Verbosity.Debug) {
                 Log();
-                Log($"[DBG] {ex.ToString()}");
+                Log($"[DBG] {ex.ToString()}", RecordType.Error);
             }
 
             if (ex.InnerException != null) {

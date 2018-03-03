@@ -46,7 +46,6 @@ namespace ReflectionCli
             } catch (Exception ex) {
                 _loggingService.LogException(ex);
             }
-
         }
     }
 }

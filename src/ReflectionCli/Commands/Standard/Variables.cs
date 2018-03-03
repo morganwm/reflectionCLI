@@ -35,7 +35,7 @@ namespace ReflectionCLI.Commands.Standard
 
             foreach (var variable in _variableService.Get())
             {
-                _loggingService.Log($"  {variable.Key}        {variable.Value}  ({variable.Value.GetType()})");
+                _loggingService.LogResult($"  {variable.Key}        {variable.Value}  ({variable.Value.GetType()})");
             }
         }
 

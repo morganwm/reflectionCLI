@@ -17,7 +17,7 @@ namespace ReflectionCli
 
         public void Run()
         {
-            _assemblyService.Get().ToList().ForEach(x => _loggingService.Log(x.GetName().Name));
+            _assemblyService.Get().ToList().ForEach(x => _loggingService.LogResult(x.GetName().Name));
         }
 
         public bool ExitVal()

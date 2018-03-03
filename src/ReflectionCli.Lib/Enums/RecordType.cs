@@ -6,6 +6,6 @@ namespace ReflectionCli.Lib.Enums
         Input = 0,
         Output = 1,
         Result = 2,
-        Internal = 3
+        Error = 3
     }
 }

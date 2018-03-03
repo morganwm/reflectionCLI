@@ -22,7 +22,7 @@ namespace ReflectionCli
 
             _assemblyService.Get().ToList().ForEach(t =>
             {
-                _loggingService.Log($"{Environment.NewLine}   - {t.FullName}");
+                _loggingService.LogResult($"{Environment.NewLine}   - {t.FullName}");
 
                 t.DefinedTypes.Where(u => (
                     // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
@@ -31,7 +31,7 @@ namespace ReflectionCli
                         .Count != 0
                 ))
                 .ToList()
-                .ForEach(v => _loggingService.Log($"       - {v.Name}"));
+                .ForEach(v => _loggingService.LogResult($"       - {v.Name}"));
             });
         }
 
@@ -40,7 +40,7 @@ namespace ReflectionCli
             _loggingService.Log($"Valid Commands for {name}:");
             _assemblyService.Get().ToList().ForEach(t =>
             {
-                _loggingService.Log($"{Environment.NewLine}-{t.FullName}");
+                _loggingService.LogResult($"{Environment.NewLine}-{t.FullName}");
                 t.DefinedTypes.Where(u => (
                     // this has to be done this way as the ICommand interface is not object equivalent for runtime loaded assemblies
                     u.ImplementedInterfaces.Where(v => v.Name == nameof(ICommand))
@@ -57,12 +57,12 @@ namespace ReflectionCli
                     .ToList()
                     .ForEach(v =>
                     {
-                        _loggingService.Log($"{Environment.NewLine} + {name}");
+                        _loggingService.LogResult($"{Environment.NewLine} + {name}");
 
                         v.GetParameters().ToList().ForEach(w =>
                         {
                             string optional = w.HasDefaultValue ? "(Optional)" : string.Empty;
-                            _loggingService.Log($"        - {optional} {w.Name} ({w.ParameterType.FullName})");
+                            _loggingService.LogResult($"        - {optional} {w.Name} ({w.ParameterType.FullName})");
                         });
                     });
                 });
