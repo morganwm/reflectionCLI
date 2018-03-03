@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ReflectionCli.Lib.Enums;
 using ReflectionCli.Test.HelperServices;
 using Xunit;
 using static ReflectionCli.extended.ScriptingCommandSet;
@@ -25,7 +26,7 @@ namespace ReflectionCli.Test.Services
             _runScript.Run("2+2");
 
             var res = _loggingService.Records
-                .Where(t => t.RecordType == Lib.Enums.RecordType.Result)
+                .Where(t => t.RecordType == RecordType.Result)
                 .ToList();
 
             Assert.Equal(res.Count, 1);
