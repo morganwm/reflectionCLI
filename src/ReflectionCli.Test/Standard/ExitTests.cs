@@ -27,5 +27,18 @@ namespace ReflectionCli.Test.Services
             
             Assert.True(Program.ShutDown);
         }
+
+        [Fact]
+        public void Exit_ExitFunction_ShouldPrintExitText()
+        {
+            _exit.Run();
+
+            var res = _loggingService.Records
+                .Where(t => t.RecordType == RecordType.Result)
+                .ToList();
+
+            Assert.Equal(res.Count, 1);
+            Assert.Equal(res.Single().Message, "Shutting down....");
+        }
     }
 }
