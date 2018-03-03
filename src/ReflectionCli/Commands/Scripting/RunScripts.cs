@@ -54,11 +54,11 @@ namespace ReflectionCli.extended
                         options = ScriptOptions.Default.AddImports(imports);
                     }
 
-                    Console.WriteLine();
+                    _loggingService.Log();
 
                     try
                     {
-                        _loggingService.Log(await CSharpScript.EvaluateAsync(script, options));
+                        _loggingService.LogResult(await CSharpScript.EvaluateAsync(script, options));
                     }
                     catch (CompilationErrorException e)
                     {

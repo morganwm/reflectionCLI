@@ -1,31 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using ReflectionCli.Lib;
 using ReflectionCli.Lib.Enums;
 
-namespace ReflectionCli.Lib
+namespace ReflectionCli.Test.HelperServices
 {
-    public class LoggingService : ILoggingService
+    public class FakeLoggingService : ILoggingService
     {
-        public Verbosity Verbosity = Verbosity.Debug;
-        private readonly ILoggingService _loggingService;
+        public List<string> Output = new List<string>();
+        public List<string> Results = new List<string>();
+        public List<string> Input = new List<string>();
 
+        public int InputCallCounter = 0;
+
+        public Lib.Enums.Verbosity Verbosity = Lib.Enums.Verbosity.Debug;
         private string _textToBeWrittenInConsole = string.Empty;
         private string _textReadInFromConsole = string.Empty;
 
-        public Verbosity GetVerbosity()
+        public Lib.Enums.Verbosity GetVerbosity()
         {
             return Verbosity;
         }
 
         public void LogDebug(string debug)
         {
-            if (Verbosity >= Verbosity.Debug) {
+            if (Verbosity >= Lib.Enums.Verbosity.Debug) {
                 Log($"[DBG] {debug}");
             }
         }
 
         public void LogError(string error)
         {
-            if (Verbosity >= Verbosity.Error) {
+            if (Verbosity >= Lib.Enums.Verbosity.Error) {
                 Log($"[ERR] {error}");
             }
         }
@@ -33,22 +40,22 @@ namespace ReflectionCli.Lib
         public void Log(string info)
         {
             _textToBeWrittenInConsole = info;
-            Console.WriteLine(info);
+            Output.Add(info);
         }
 
         public void Log(object info)
         {
-            _textToBeWrittenInConsole = info.ToString();
-            Console.WriteLine(info);
+            Log(info.ToString());
         }
-
         public void LogResult(string info)
         {
             Log(info);
+            Results.Add(info);
         }
+
         public void LogResult(object info)
         {
-            Log(info);
+            LogResult(info.ToString());
         }
 
         public void Log()
@@ -58,34 +65,31 @@ namespace ReflectionCli.Lib
 
         public void LogInfo(string info)
         {
-            if (Verbosity >= Verbosity.Info) {
+            if (Verbosity >= Lib.Enums.Verbosity.Info) {
                 Log($"[INF] {info}");
             }
         }
 
         public void LogWarning(string warning)
         {
-            if (Verbosity >= Verbosity.Warning) {
+            if (Verbosity >= Lib.Enums.Verbosity.Warning) {
                 Log($"[WRN] {warning}");
             }
         }
 
         public void LogException(Exception ex)
         {
-            if (Verbosity >= Verbosity.Info)
-            {
+            if (Verbosity >= Lib.Enums.Verbosity.Info) {
                 Log();
                 Log($"[INF] {ex.Message}");
             }
 
-            if (Verbosity >= Verbosity.Debug)
-            {
+            if (Verbosity >= Lib.Enums.Verbosity.Debug) {
                 Log();
                 Log($"[DBG] {ex.ToString()}");
             }
 
-            if (ex.InnerException !=  null)
-            {
+            if (ex.InnerException != null) {
                 Log();
                 Log("Inner:");
                 LogException(ex.InnerException);
@@ -100,10 +104,12 @@ namespace ReflectionCli.Lib
 
         public string ReadLineFromConsole()
         {
-            return Internal(Console.ReadLine());
+            string stringToReturn = Input[InputCallCounter];
+            InputCallCounter++;
+            return stringToReturn;
         }
 
-        public void SetVerbosity(Verbosity verbosity)
+        public void SetVerbosity(Lib.Enums.Verbosity verbosity)
         {
             Verbosity = verbosity;
         }

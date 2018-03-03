@@ -14,7 +14,4 @@
     <ProjectReference Include="..\ReflectionCli.Lib\ReflectionCli.Lib.csproj" />
     <ProjectReference Include="..\ReflectionCli\ReflectionCLI.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
 </Project>

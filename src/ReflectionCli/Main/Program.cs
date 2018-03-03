@@ -45,7 +45,7 @@ namespace ReflectionCli
             while (!ShutDown) {
                 try {
                     loggingservice.Log();
-                    parseservice.Parse(loggingservice.Internal(Console.ReadLine()));
+                    parseservice.Parse(loggingservice.ReadLineFromConsole());
                     loggingservice.Log();
                 } catch (Exception ex) {
                     loggingservice.Log();
