@@ -104,7 +104,7 @@ namespace ReflectionCli.Test.HelperServices
         {
             string stringToReturn = Input[InputCallCounter];
             InputCallCounter++;
-            return stringToReturn;
+            return Internal(stringToReturn);
         }
 
         public void SetVerbosity(Lib.Enums.Verbosity verbosity)
