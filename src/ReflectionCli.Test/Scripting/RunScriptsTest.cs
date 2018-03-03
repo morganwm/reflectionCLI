@@ -24,11 +24,12 @@ namespace ReflectionCli.Test.Services
         {
             _runScript.Run("2+2");
 
-            var outputRes = _loggingService.Output;
-            var res =_loggingService.Results;
+            var res = _loggingService.Records
+                .Where(t => t.RecordType == Lib.Enums.RecordType.Result)
+                .ToList();
 
             Assert.Equal(res.Count, 1);
-            Assert.Equal(res.Single(), "4");
+            Assert.Equal(res.Single().Message, "4");
         }
     }
 }

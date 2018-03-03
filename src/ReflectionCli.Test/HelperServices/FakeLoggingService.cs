@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ReflectionCli.Lib;
 using ReflectionCli.Lib.Enums;
+using ReflectionCli.Lib.Models;
 
 namespace ReflectionCli.Test.HelperServices
 {
     public class FakeLoggingService : ILoggingService
     {
-        public List<string> Output = new List<string>();
-        public List<string> Results = new List<string>();
-        public List<string> Input = new List<string>();
+        public List<Record> Records = new List<Record>();
 
+        public List<string> Input = new List<string>();
         public int InputCallCounter = 0;
 
         public Lib.Enums.Verbosity Verbosity = Lib.Enums.Verbosity.Debug;
-        private string _textToBeWrittenInConsole = string.Empty;
-        private string _textReadInFromConsole = string.Empty;
 
         public Lib.Enums.Verbosity GetVerbosity()
         {
@@ -39,8 +38,7 @@ namespace ReflectionCli.Test.HelperServices
 
         public void Log(string info)
         {
-            _textToBeWrittenInConsole = info;
-            Output.Add(info);
+            Records.Add(new Record(info));
         }
 
         public void Log(object info)
@@ -49,8 +47,8 @@ namespace ReflectionCli.Test.HelperServices
         }
         public void LogResult(string info)
         {
+            Records.Add(new Record(info, RecordType.Result));
             Log(info);
-            Results.Add(info);
         }
 
         public void LogResult(object info)
@@ -98,7 +96,7 @@ namespace ReflectionCli.Test.HelperServices
 
         public string Internal(string info)
         {
-            _textReadInFromConsole = info;
+            Records.Add(new Record(info, RecordType.Input));
             return info;
         }
 
@@ -116,7 +114,11 @@ namespace ReflectionCli.Test.HelperServices
 
         public string GetLastTextWrittenInConsole()
         {
-            return _textToBeWrittenInConsole;
+            return Records
+                .Where(t => t.RecordType == RecordType.Output)
+                .OrderBy(t => t.Written)
+                .LastOrDefault()
+                .Message;
         }
     }
 }

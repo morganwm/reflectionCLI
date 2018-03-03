@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using ReflectionCli.Lib.Enums;
+using ReflectionCli.Lib.Models;
 
 namespace ReflectionCli.Lib
 {
     public class LoggingService : ILoggingService
     {
+        public List<Record> Records = new List<Record>();
+
         public Verbosity Verbosity = Verbosity.Debug;
         private readonly ILoggingService _loggingService;
-
-        private string _textToBeWrittenInConsole = string.Empty;
-        private string _textReadInFromConsole = string.Empty;
 
         public Verbosity GetVerbosity()
         {
@@ -32,22 +34,24 @@ namespace ReflectionCli.Lib
 
         public void Log(string info)
         {
-            _textToBeWrittenInConsole = info;
+            Records.Add(new Record(info));
             Console.WriteLine(info);
         }
 
         public void Log(object info)
         {
-            _textToBeWrittenInConsole = info.ToString();
+            Records.Add(new Record(info.ToString()));
             Console.WriteLine(info);
         }
 
         public void LogResult(string info)
         {
+            Records.Add(new Record(info, RecordType.Result));
             Log(info);
         }
         public void LogResult(object info)
         {
+            Records.Add(new Record(info.ToString(), RecordType.Result));
             Log(info);
         }
 
@@ -94,7 +98,7 @@ namespace ReflectionCli.Lib
 
         public string Internal(string info)
         {
-            _textReadInFromConsole = info;
+            Records.Add(new Record(info, RecordType.Input));
             return info;
         }
 
@@ -110,7 +114,11 @@ namespace ReflectionCli.Lib
 
         public string GetLastTextWrittenInConsole()
         {
-            return _textToBeWrittenInConsole;
+            return Records
+                .Where(t => t.RecordType == RecordType.Output)
+                .OrderBy(t => t.Written)
+                .LastOrDefault()
+                .Message;
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using ReflectionCli.Lib.Enums;
+using ReflectionCli.Lib.Models;
 
 namespace ReflectionCli.Lib
 {
