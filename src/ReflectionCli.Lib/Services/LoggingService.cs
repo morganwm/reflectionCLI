@@ -126,7 +126,7 @@ namespace ReflectionCli.Lib
             return Records
                 .Where(t => t.RecordType == RecordType.Output)
                 .OrderBy(t => t.Written)
-                .LastOrDefault()
+                .LastOrDefault()?
                 .Message;
         }
     }
